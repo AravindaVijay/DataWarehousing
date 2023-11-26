@@ -1,0 +1,35 @@
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix fn:    <http://www.w3.org/2005/xpath-functions#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix dwo:   <https://ontology.data.world/v0#> .
+@prefix label: <http://purl.org/net/vocab/2004/03/label#> .
+
+dwo:Currency
+        a                owl:Class ;
+        rdfs:label       "Currency" ;
+        label:plural     "Currencies" ;
+        foaf:depiction   <https://ontology-assets.data.world/icons/icon-currency.svg>;
+        rdfs:isDefinedBy dwo: ;
+        dc:description   "A system of money in general use in a particular country." .
+
+dwo:Code_Iso3DigitCurrency
+        a                dwo:CodeSet ;
+        dwo:denotation   dwo:Currency;
+        rdfs:label       "ISO 3 Digit Currency Code" ;
+        label:plural     "ISO 3 Digit Currency Codes" ;
+        rdfs:isDefinedBy dwo:  ;
+        dwo:denotedByPredicate dwo:iso_3166 .
+
+
+dwo:Code_Iso3LetterCurrency
+        a                dwo:CodeSet ;
+        dwo:denotation   dwo:Currency;
+        rdfs:label       "ISO 3 Letter Currency Code" ;
+        label:plural     "ISO 3 Letter Currency Codes" ;
+        rdfs:isDefinedBy dwo:  ;
+        dwo:denotedByPredicate dwo:iso_4217 .
+

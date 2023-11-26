@@ -1,0 +1,318 @@
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix dwo: <https://ontology.data.world/v0#> .
+@prefix dwe: <https://entities.data.world/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix label: <http://purl.org/net/vocab/2004/03/label#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+
+dwo:NAICSEntity a owl:Class ;
+  rdfs:subClassOf skos:Concept ;
+  rdfs:isDefinedBy dwo: ;
+  foaf:depiction <https://ontology-assets.data.world/icons/icon-ind.svg> ;
+  rdfs:label "NAICS Code" ;
+  skos:prefLabel "NAICS Code" ;
+  label:plural "NAICS Codes" ;
+  dc:description "NAICS Codes"
+  .
+
+dwo:NAICS2017-Entity a owl:Class ;
+  rdfs:subClassOf dwo:NAICSEntity ;
+  rdfs:isDefinedBy dwo: ;
+  rdfs:label "NAICS 2017 Code" ;
+  skos:prefLabel "NAICS 2017 Code" ;
+  label:plural "NAICS 2017 Codes" ;
+  dc:description "NAICS 2017 Codes" 
+  .
+
+dwo:NAICS2017-Sector a owl:Class ;
+  rdfs:subClassOf dwo:NAICS2017-Entity ;
+  rdfs:isDefinedBy dwo: ;
+  rdfs:label "NAICS 2017 Sector" ;
+  skos:prefLabel "NAICS 2017 Sector" ;
+  label:plural "NAICS 2017 Sectors" ;
+  dc:description "NAICS 2017 Sector" 
+  .
+
+dwo:NAICS2017-Subsector a owl:Class ;
+  rdfs:subClassOf dwo:NAICS2017-Entity ;
+  rdfs:isDefinedBy dwo: ;
+  rdfs:label "NAICS 2017 Subsector" ;
+  skos:prefLabel "NAICS 2017 Subsector" ;
+  label:plural "NAICS 2017 Subsectors" ;
+  dc:description "NAICS 2017 Subsector" ; 
+  dwo:mayBePartOf dwo:NAICS2017-Sector
+  .
+
+dwo:NAICS2017-IndustryGroup a owl:Class ;
+  rdfs:subClassOf dwo:NAICS2017-Entity ;
+  rdfs:isDefinedBy dwo: ;
+  rdfs:label "NAICS 2017 Industry Group" ;
+  skos:prefLabel "NAICS 2017 Industry Group" ;
+  label:plural "NAICS 2017 Industry Groups" ;
+  dc:description "NAICS 2017 Industry Group" ; 
+  dwo:mayBePartOf dwo:NAICS2017-Subsector
+  .
+
+dwo:NAICS2017-Industry a owl:Class ;
+  rdfs:subClassOf dwo:NAICS2017-Entity ;
+  rdfs:isDefinedBy dwo: ;
+  rdfs:label "NAICS 2017 Industry" ;
+  skos:prefLabel "NAICS 2017 Industry" ;
+  label:plural "NAICS 2017 Industries" ;
+  dc:description "NAICS 2017 Industry" ; 
+  dwo:mayBePartOf dwo:NAICS2017-IndustryGroup
+  .
+
+dwo:NAICS2017-USIndustry a owl:Class ;
+  rdfs:subClassOf dwo:NAICS2017-Entity ;
+  rdfs:isDefinedBy dwo: ;
+  rdfs:label "NAICS 2017 US Industry" ;
+  skos:prefLabel "NAICS 2017 US Industry" ;
+  label:plural "NAICS 2017 US Industries" ;
+  dc:description "NAICS 2017 US Industry" ; 
+  dwo:mayBePartOf dwo:NAICS2017-Industry
+  .
+
+dwo:NAICS2017-Sector-Code a dwo:CodeSet ;
+  rdfs:isDefinedBy dwo: ;
+  dwo:denotation dwo:NAICS2017-Sector ; 
+  rdfs:label "NAICS 2017 Sector Code" ;
+  label:plural "NAICS 2017 Sector Codes" ;
+  dwo:denotedByPredicate skos:notation
+  .
+
+dwo:NAICS2017-Subsector-Code a dwo:CodeSet ;
+  rdfs:isDefinedBy dwo: ;
+  dwo:denotation dwo:NAICS2017-Subsector ; 
+  rdfs:label "NAICS 2017 Subsector Code" ;
+  label:plural "NAICS 2017 Subsector Codes" ;
+  dwo:denotedByPredicate skos:notation
+  .
+
+dwo:NAICS2017-IndustryGroup-Code a dwo:CodeSet ;
+  rdfs:isDefinedBy dwo: ;
+  dwo:denotation dwo:NAICS2017-IndustryGroup ; 
+  rdfs:label "NAICS 2017 Industry Group Code" ;
+  label:plural "NAICS 2017 Industry Group Codes" ;
+  dwo:denotedByPredicate skos:notation
+  .
+
+dwo:NAICS2017-Industry-Code a dwo:CodeSet ;
+  rdfs:isDefinedBy dwo: ;
+  dwo:denotation dwo:NAICS2017-Industry ; 
+  rdfs:label "NAICS 2017 Industry Code" ;
+  label:plural "NAICS 2017 Industry Codes" ;
+  dwo:denotedByPredicate skos:notation
+  .
+
+dwo:NAICS2017-USIndustryCode a dwo:CodeSet ;
+  rdfs:isDefinedBy dwo: ;
+  dwo:denotation dwo:NAICS2017-USIndustry ; 
+  rdfs:label "NAICS 2017 US Industry Code" ;
+  label:plural "NAICS 2017 US Industry Codes" ;
+  dwo:denotedByPredicate skos:notation
+  .
+
+
+dwo:NAICS2012-Entity a owl:Class ;
+  rdfs:subClassOf dwo:NAICSEntity ;
+  rdfs:isDefinedBy dwo: ;
+  rdfs:label "NAICS 2012 Code" ;
+  skos:prefLabel "NAICS 2012 Code" ;
+  label:plural "NAICS 2012 Codes" ;
+  dc:description "NAICS 2012 Codes" 
+  .
+
+dwo:NAICS2012-Sector a owl:Class ;
+  rdfs:subClassOf dwo:NAICS2012-Entity ;
+  rdfs:isDefinedBy dwo: ;
+  rdfs:label "NAICS 2012 Sector" ;
+  skos:prefLabel "NAICS 2012 Sector" ;
+  label:plural "NAICS 2012 Sectors" ;
+  dc:description "NAICS 2012 Sector" 
+  .
+
+dwo:NAICS2012-Subsector a owl:Class ;
+  rdfs:subClassOf dwo:NAICS2012-Entity ;
+  rdfs:isDefinedBy dwo: ;
+  rdfs:label "NAICS 2012 Subsector" ;
+  skos:prefLabel "NAICS 2012 Subsector" ;
+  label:plural "NAICS 2012 Subsectors" ;
+  dc:description "NAICS 2012 Subsector" ; 
+  dwo:mayBePartOf dwo:NAICS2012-Sector
+  .
+
+dwo:NAICS2012-IndustryGroup a owl:Class ;
+  rdfs:subClassOf dwo:NAICS2012-Entity ;
+  rdfs:isDefinedBy dwo: ;
+  rdfs:label "NAICS 2012 Industry Group" ;
+  skos:prefLabel "NAICS 2012 Industry Group" ;
+  label:plural "NAICS 2012 Industry Groups" ;
+  dc:description "NAICS 2012 Industry Group" ; 
+  dwo:mayBePartOf dwo:NAICS2012-Subsector
+  .
+
+dwo:NAICS2012-Industry a owl:Class ;
+  rdfs:subClassOf dwo:NAICS2012-Entity ;
+  rdfs:isDefinedBy dwo: ;
+  rdfs:label "NAICS 2012 Industry" ;
+  skos:prefLabel "NAICS 2012 Industry" ;
+  label:plural "NAICS 2012 Industries" ;
+  dc:description "NAICS 2012 Industry" ; 
+  dwo:mayBePartOf dwo:NAICS2012-IndustryGroup
+  .
+
+dwo:NAICS2012-USIndustry a owl:Class ;
+  rdfs:subClassOf dwo:NAICS2012-Entity ;
+  rdfs:isDefinedBy dwo: ;
+  rdfs:label "NAICS 2012 US Industry" ;
+  skos:prefLabel "NAICS 2012 US Industry" ;
+  label:plural "NAICS 2012 US Industries" ;
+  dc:description "NAICS 2012 US Industry" ; 
+  dwo:mayBePartOf dwo:NAICS2012-Industry
+  .
+
+dwo:NAICS2012-Sector-Code a dwo:CodeSet ;
+  rdfs:isDefinedBy dwo: ;
+  dwo:denotation dwo:NAICS2012-Sector ; 
+  rdfs:label "NAICS 2012 Sector Code" ;
+  label:plural "NAICS 2012 Sector Codes" ;
+  dwo:denotedByPredicate skos:notation
+  .
+
+dwo:NAICS2012-Subsector-Code a dwo:CodeSet ;
+  rdfs:isDefinedBy dwo: ;
+  dwo:denotation dwo:NAICS2012-Subsector ; 
+  rdfs:label "NAICS 2012 Subsector Code" ;
+  label:plural "NAICS 2012 Subsector Codes" ;
+  dwo:denotedByPredicate skos:notation
+  .
+
+dwo:NAICS2012-IndustryGroup-Code a dwo:CodeSet ;
+  rdfs:isDefinedBy dwo: ;
+  dwo:denotation dwo:NAICS2012-IndustryGroup ; 
+  rdfs:label "NAICS 2012 Industry Group Code" ;
+  label:plural "NAICS 2012 Industry Group Codes" ;
+  dwo:denotedByPredicate skos:notation
+  .
+
+dwo:NAICS2012-Industry-Code a dwo:CodeSet ;
+  rdfs:isDefinedBy dwo: ;
+  dwo:denotation dwo:NAICS2012-Industry ; 
+  rdfs:label "NAICS 2012 Industry Code" ;
+  label:plural "NAICS 2012 Industry Codes" ;
+  dwo:denotedByPredicate skos:notation
+  .
+
+
+dwo:NAICS2012-USIndustry-Code a dwo:CodeSet ;
+  rdfs:isDefinedBy dwo: ;
+  dwo:denotation dwo:NAICS2012-USIndustry ; 
+  rdfs:label "NAICS 2012 US Industry Code" ;
+  label:plural "NAICS 2012 US Industry Codes" ;
+  dwo:denotedByPredicate skos:notation
+  .
+
+
+dwo:NAICS2007-Entity a owl:Class ; 
+  rdfs:subClassOf dwo:NAICSEntity ;
+  rdfs:isDefinedBy dwo: ;
+  rdfs:label "NAICS 2007 Code" ;
+  skos:prefLabel "NAICS 2007 Code" ;
+  label:plural "NAICS 2007 Codes" ;
+  dc:description "NAICS 2012 Codes" 
+  .
+
+dwo:NAICS2007-Sector a owl:Class ;
+  rdfs:subClassOf dwo:NAICS2007-Entity ;
+  rdfs:isDefinedBy dwo: ;
+  rdfs:label "NAICS 2007 Sector" ;
+  skos:prefLabel "NAICS 2007 Sector" ;
+  label:plural "NAICS 2007 Sectors" ;
+  dc:description "NAICS 2007 Sector" 
+  .
+
+dwo:NAICS2007-Subsector a owl:Class ;
+  rdfs:subClassOf dwo:NAICS2007-Entity ;
+  rdfs:isDefinedBy dwo: ;
+  rdfs:label "NAICS 2007 Subsector" ;
+  skos:prefLabel "NAICS 2007 Subsector" ;
+  label:plural "NAICS 2007 Subsectors" ;
+  dc:description "NAICS 2007 Subsector" ; 
+  dwo:mayBePartOf dwo:NAICS2007-Sector
+  .
+
+dwo:NAICS2007-IndustryGroup a owl:Class ;
+  rdfs:subClassOf dwo:NAICS2007-Entity ;
+  rdfs:isDefinedBy dwo: ;
+  rdfs:label "NAICS 2007 Industry Group" ;
+  skos:prefLabel "NAICS 2007 Industry Group" ;
+  label:plural "NAICS 2007 Industry Groups" ;
+  dc:description "NAICS 2007 Industry Group" ; 
+  dwo:mayBePartOf dwo:NAICS2007-Subsector
+  .
+
+dwo:NAICS2007-Industry a owl:Class ;
+  rdfs:subClassOf dwo:NAICS2007-Entity ;
+  rdfs:isDefinedBy dwo: ;
+  rdfs:label "NAICS 2007 Industry" ;
+  skos:prefLabel "NAICS 2007 Industry" ;
+  label:plural "NAICS 2007 Industries" ;
+  dc:description "NAICS 2007 Industry" ; 
+  dwo:mayBePartOf dwo:NAICS2007-IndustryGroup
+  .
+
+dwo:NAICS2007-USIndustry a owl:Class ;
+  rdfs:subClassOf dwo:NAICS2007-Entity ;
+  rdfs:isDefinedBy dwo: ;
+  rdfs:label "NAICS 2007 US Industry" ;
+  skos:prefLabel "NAICS 2007 US Industry" ;
+  label:plural "NAICS 2007 US Industries" ;
+  dc:description "NAICS 2007 US Industry" ; 
+  dwo:mayBePartOf dwo:NAICS2007-Industry
+  .
+
+dwo:NAICS2007-Sector-Code a dwo:CodeSet ;
+  rdfs:isDefinedBy dwo: ;
+  dwo:denotation dwo:NAICS2007-Sector ; 
+  rdfs:label "NAICS 2007 Sector Code" ;
+  label:plural "NAICS 2007 Sector Codes" ;
+  dwo:denotedByPredicate skos:notation
+  .
+
+dwo:NAICS2007-Subsector-Code a dwo:CodeSet ;
+  rdfs:isDefinedBy dwo: ;
+  dwo:denotation dwo:NAICS2007-Subsector ; 
+  rdfs:label "NAICS 2007 Subsector Code" ;
+  label:plural "NAICS 2007 Subsector Codes" ;
+  dwo:denotedByPredicate skos:notation
+  .
+
+dwo:NAICS2007-IndustryGroup-Code a dwo:CodeSet ;
+  rdfs:isDefinedBy dwo: ;
+  dwo:denotation dwo:NAICS2007-IndustryGroup ; 
+  rdfs:label "NAICS 2007 Industry Group Code" ;
+  label:plural "NAICS 2007 Industry Group Codes" ;
+  dwo:denotedByPredicate skos:notation
+  .
+
+dwo:NAICS2007-Industry-Code a dwo:CodeSet ;
+  rdfs:isDefinedBy dwo: ;
+  dwo:denotation dwo:NAICS2007-Industry ; 
+  rdfs:label "NAICS 2007 Industry Code" ;
+  label:plural "NAICS 2007 Industry Codes" ;
+  dwo:denotedByPredicate skos:notation
+  .
+
+
+dwo:NAICS2007-USIndustry-Code a dwo:CodeSet ;
+  rdfs:isDefinedBy dwo: ;
+  dwo:denotation dwo:NAICS2007-USIndustry ; 
+  rdfs:label "NAICS 2007 US Industry Code" ;
+  label:plural "NAICS 2007 US Industry Codes" ;
+  dwo:denotedByPredicate skos:notation
+  .

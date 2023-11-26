@@ -1,0 +1,50 @@
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dwo:   <https://ontology.data.world/v0#> .
+@prefix label: <http://purl.org/net/vocab/2004/03/label#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+
+dwo:Ontology a rdfs:Class.
+
+dwo:CodeSet a rdfs:Class.
+
+dwo:Code a rdfs:Class.
+
+dwo:inCodeSet a rdfs:Property.
+dwo:inCodeSet rdfs:domain dwo:Code.
+dwo:inCodeSet rdfs:range dwo:CodeSet.
+
+dwo:denotation a rdfs:Property.
+dwo:denotation rdfs:domain dwo:CodeSet.
+dwo:denotation rdfs:range owl:Class.
+
+dwo:requiresContext a rdfs:Property.
+dwo:requiresContext rdfs:domain dwo:CodeSet.
+dwo:requiresContext rdfs:range owl:Class.
+
+dwo:denotes a rdfs:Property.
+dwo:denotes rdfs:domain dwo:Code.
+dwo:denotes rdfs:range rdfs:Resource.
+
+dwo:denotesWithContext a rdfs:Property.
+dwo:denotesWithContext rdfs:domain dwo:Code.
+dwo:denotesWithContext rdfs:range rdfs:Resource.
+
+dwo:mayBePartOf a rdfs:Property.
+dwo:mayBePartOf rdfs:domain owl:Class.
+dwo:mayBePartOf rdfs:range owl:Class.
+
+dwo:partOf a rdfs:Property.
+dwo:partOf rdfs:domain rdfs:Resource.
+dwo:partOf rdfs:range rdfs:Resource.
+
+dwo:featuredPredicateOf a rdfs:Property.
+dwo:featuredPredicateOf rdfs:domain rdfs:Class.
+dwo:featuredPredicateOf rdfs:range rdfs:Property.
+
+
+
+
+

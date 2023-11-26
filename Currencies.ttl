@@ -1,0 +1,1754 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc:  <http://purl.org/dc/elements/1.1/> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix fn:  <http://www.w3.org/2005/xpath-functions#> .
+@prefix build:  <https://ddw-ontology-team.linked.data.world/d/create-currencies/> .
+@prefix monies:  <https://ddw-ontology-team.linked.data.world/d/currencies/> .
+@prefix dwo:  <https://ontology.data.world/v0#> .
+@prefix dwe:  <https://entities.data.world/> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix wdrs:  <http://www.w3.org/2007/05/powder-s#> .
+@prefix dwf:  <http://data.world/function/functions#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+
+build:Currencies  rdf:type      prov:Activity ;
+        prov:generated          <https://data.world/ddw-ontology-team/create-currencies/user/Currencies.ttl> ;
+        prov:startedAtTime      "2018-07-06T13:53:19.569Z"^^xsd:dateTime ;
+        prov:used               build:dataset_172bbb3e-ebd0-4dd2-b5ec-f78820ab7ece ;
+        prov:used               build:project_38e4d966-1ca0-4a7c-a654-900f22e2cd7e ;
+        prov:used               build:query_37bfde6cbda92fd61383db51490f2bd06b7f27e1 ;
+        prov:wasAssociatedWith  <https://data.world/snoyark> .
+
+build:dataset_172bbb3e-ebd0-4dd2-b5ec-f78820ab7ece
+        dwo:versionId          "172bbb3e-ebd0-4dd2-b5ec-f78820ab7ece" ;
+        rdf:type               prov:Entity ;
+        prov:specializationOf  <https://data.world/ddw-ontology-team/currencies> .
+
+build:project_38e4d966-1ca0-4a7c-a654-900f22e2cd7e
+        dwo:versionId          "38e4d966-1ca0-4a7c-a654-900f22e2cd7e" ;
+        rdf:type               prov:Entity ;
+        prov:specializationOf  <https://data.world/ddw-ontology-team/create-currencies> .
+
+build:query_37bfde6cbda92fd61383db51490f2bd06b7f27e1
+        rdf:type               prov:Entity ;
+        wdrs:sha1sum           "37bfde6cbda92fd61383db51490f2bd06b7f27e1" ;
+        wdrs:text              "PREFIX build: <https://ddw-ontology-team.linked.data.world/d/create-currencies/>\nPREFIX monies: <https://ddw-ontology-team.linked.data.world/d/currencies/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX dwo: <https://ontology.data.world/v0#>\nPREFIX dwe: <https://entities.data.world/>\nPREFIX dc: <http://purl.org/dc/elements/1.1/>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nPREFIX wdrs:  <http://www.w3.org/2007/05/powder-s#> \nPREFIX dwf:  <http://data.world/function/functions#> \nPREFIX foaf:  <http://xmlns.com/foaf/0.1/>\nPREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n\nCONSTRUCT {\n    ?iri            a                   ?classIRI;\n                    rdfs:label          ?currencyLabel;\n                    skos:prefLabel      ?currencyLabel;\n                    dwo:iso_4217        ?iso_code;\n                    dwo:iso_3166        ?iso_code_num;\n                    dwo:central_bank    ?issuer;\n                    dwo:wikipediaLink   ?wikiLink;\n                    dwo:currencyOf      ?country;\n                    dwo:wikidataLink    ?wdLink.\n                    \n    \n    build:Currencies a prov:Activity ;\n      prov:wasAssociatedWith ?agent ; prov:startedAtTime ?timeStamp ; \n      prov:used ?projectVersion, ?datasetVersion, ?queryVersion ;\n      prov:generated ?resultGraph\n      .\n    ?projectVersion a prov:Entity ;\n      prov:specializationOf ?project ; dwo:versionId ?projectVersionId\n    .\n    ?datasetVersion a prov:Entity ;\n      prov:specializationOf ?dataset ; dwo:versionId ?datasetVersionId\n    .\n    ?queryVersion a prov:Entity ;\n      prov:specializationOf ?query ; wdrs:text ?queryText ; wdrs:sha1sum ?querySha\n    .\n                            \n}\n\nFROM NAMED<https://data.world/ddw-ontology-team/currencies> {\n    GRAPH<https://data.world/ddw-ontology-team/currencies> {\n        ?c  a       monies:tbl-currencies;\n                    monies:col-currencies-currencylabel ?currencyLabel;\n                    monies:col-currencies-isocode_4217 ?iso_code;\n                    monies:col-currencies-wikipedia ?wikiLink;\n                    monies:col-currencies-countrylabel ?country_raw_raw;\n                    monies:col-currencies-wikidata ?wdLink;\n                    monies:col-currencies-country_iso ?country_iso.\n        ?iso_num a  monies:tbl-country_codes_csv;\n                    monies:col-country_codes_csv-iso3166_1_alpha_2 ?country_iso.\n        \n        BIND (\n            LCASE(\n                REPLACE(?currencyLabel, \"\\\\W\", \"_\"\n                )\n            ) \n        AS ?lowerCurrencyLabel)\n            \n        BIND (\n            IRI(CONCAT(\n                STR(dwe:currency), '_', ?lowerCurrencyLabel)\n            )\n        AS ?iri) .\n        \n        BIND(LCASE(REPLACE(?country_raw_raw, \"\\\\W\", \"_\")) AS ?country_raw)\n        \n        BIND(\n            IRI(\n                CONCAT(STR(dwe:country), '_', ?country_raw)\n            )\n        AS ?country)\n            \n        BIND (\n            IRI(\n                STR(dwo:Currency)\n            )\n        AS ?classIRI)\n            \n        OPTIONAL {\n            ?c monies:col-currencies-central_bank ?issuer.\n        }\n        \n        OPTIONAL {\n            ?iso_num monies:col-country_codes_csv-iso4217_currency_numeric_code ?iso_code_num;\n        }\n        \n        monies: foaf:homepage ?dataset ; dwo:versionId ?datasetVersionId .\n    }\n    \n  build: foaf:homepage ?project ; dwo:versionId ?projectVersionId .\n  \n  BIND(<https://data.world/ddw-ontology-team/create-currencies/workspace/query?queryid=64fa7c57-b0b4-4e70-b5be-5deff2681246>\n      AS ?query)\n  # bind the URI for the current user as ?agent (note: future - a dwf: function for that!)\n  BIND(<https://data.world/snoyark> AS ?agent)\n  # bind the ?timeStamp\n  BIND(NOW() AS ?timeStamp)\n  # bind the query text and SHA-1\n  BIND(dwf:queryText() AS ?queryText)\n  BIND(SHA1(dwf:queryText()) AS ?querySha)\n  # create URIs for ?projectVersion ?datasetVersion queryVersion\n  BIND(IRI(CONCAT(STR(build:project_), ?projectVersionId)) AS ?projectVersion)\n  BIND(IRI(CONCAT(STR(build:dataset_), ?datasetVersionId)) AS ?datasetVersion)\n  BIND(IRI(CONCAT(STR(build:query_), ?querySha)) AS ?queryVersion)\n  BIND(IRI(CONCAT(STR(?project), \"/user/\", \"Currencies.ttl\")) AS ?resultGraph)\n}" ;
+        prov:specializationOf  <https://data.world/ddw-ontology-team/create-currencies/workspace/query?queryid=64fa7c57-b0b4-4e70-b5be-5deff2681246> .
+
+dwe:currency_afghan_afghani
+        dwo:central_bank   "Da Afghanistan Bank" ;
+        dwo:currencyOf     dwe:country_afghanistan ;
+        dwo:iso_3166       971 ;
+        dwo:iso_4217       "AFN" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q199471> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Afghan_afghani> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Afghan afghani" ;
+        skos:prefLabel     "Afghan afghani" .
+
+dwe:currency_albanian_lek
+        dwo:central_bank   "Bank of Albania" ;
+        dwo:currencyOf     dwe:country_albania ;
+        dwo:iso_3166       8 ;
+        dwo:iso_4217       "ALL" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q125999> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Albanian_lek> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Albanian lek" ;
+        skos:prefLabel     "Albanian lek" .
+
+dwe:currency_algerian_dinar
+        dwo:central_bank   "Bank of Algeria" ;
+        dwo:currencyOf     dwe:country_algeria ;
+        dwo:iso_3166       12 ;
+        dwo:iso_4217       "DZD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q199674> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Algerian_dinar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Algerian dinar" ;
+        skos:prefLabel     "Algerian dinar" .
+
+dwe:currency_angolan_kwanza
+        dwo:central_bank   "National Bank of Angola" ;
+        dwo:currencyOf     dwe:country_angola ;
+        dwo:iso_3166       973 ;
+        dwo:iso_4217       "AOA" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q200337> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Angolan_kwanza> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Angolan kwanza" ;
+        skos:prefLabel     "Angolan kwanza" .
+
+dwe:currency_argentine_peso_mono
+        dwo:central_bank   "Central Bank of Argentina" ;
+        dwo:currencyOf     dwe:country_argentina ;
+        dwo:iso_3166       32 ;
+        dwo:iso_4217       "ARS" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q199578> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Argentine_peso> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Argentine peso mono" ;
+        skos:prefLabel     "Argentine peso mono" .
+
+dwe:currency_armenian_dram
+        dwo:central_bank   "Central Bank of Armenia" ;
+        dwo:currencyOf     dwe:country_armenia ;
+        dwo:iso_3166       51 ;
+        dwo:iso_4217       "AMD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q130498> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Armenian_dram> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Armenian dram" ;
+        skos:prefLabel     "Armenian dram" .
+
+dwe:currency_aruban_florin
+        dwo:central_bank   "Central Bank of Aruba" ;
+        dwo:currencyOf     dwe:country_aruba ;
+        dwo:iso_3166       533 ;
+        dwo:iso_4217       "AWG" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q232270> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Aruban_florin> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Aruban florin" ;
+        skos:prefLabel     "Aruban florin" .
+
+dwe:currency_azerbaijani_manat
+        dwo:central_bank   "Central Bank of Azerbaijan" ;
+        dwo:currencyOf     dwe:country_azerbaijan ;
+        dwo:iso_3166       944 ;
+        dwo:iso_4217       "AZN" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q483725> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Azerbaijani_manat> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Azerbaijani manat" ;
+        skos:prefLabel     "Azerbaijani manat" .
+
+dwe:currency_bahamian_dollar
+        dwo:central_bank   "Central Bank of The Bahamas" ;
+        dwo:currencyOf     dwe:country_bahamas ;
+        dwo:iso_3166       44 ;
+        dwo:iso_4217       "BSD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q194339> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Bahamian_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Bahamian dollar" ;
+        skos:prefLabel     "Bahamian dollar" .
+
+dwe:currency_bahraini_dinar
+        dwo:central_bank   "Central Bank of Bahrain" ;
+        dwo:currencyOf     dwe:country_bahrain ;
+        dwo:iso_3166       48 ;
+        dwo:iso_4217       "BHD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q201871> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Bahraini_dinar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Bahraini dinar" ;
+        skos:prefLabel     "Bahraini dinar" .
+
+dwe:currency_barbadian_dollar
+        dwo:central_bank   "Central Bank of Barbados" ;
+        dwo:currencyOf     dwe:country_barbados ;
+        dwo:iso_3166       52 ;
+        dwo:iso_4217       "BBD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q194351> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Barbadian_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Barbadian dollar" ;
+        skos:prefLabel     "Barbadian dollar" .
+
+dwe:currency_belarusian_ruble
+        dwo:central_bank   "National Bank of the Republic of Belarus" ;
+        dwo:currencyOf     dwe:country_belarus ;
+        dwo:iso_3166       933 ;
+        dwo:iso_4217       "BYR" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q160680> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Belarusian_ruble> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Belarusian ruble" ;
+        skos:prefLabel     "Belarusian ruble" .
+
+dwe:currency_belize_dollar
+        dwo:central_bank   "Central Bank of Belize" ;
+        dwo:currencyOf     dwe:country_belize ;
+        dwo:iso_3166       84 ;
+        dwo:iso_4217       "BZD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q275112> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Belize_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Belize dollar" ;
+        skos:prefLabel     "Belize dollar" .
+
+dwe:currency_bermudian_dollar
+        dwo:central_bank   "Bermuda Monetary Authority" ;
+        dwo:currencyOf     dwe:country_bermuda ;
+        dwo:iso_3166       60 ;
+        dwo:iso_4217       "BMD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q210478> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Bermudian_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Bermudian dollar" ;
+        skos:prefLabel     "Bermudian dollar" .
+
+dwe:currency_bhutanese_ngultrum
+        dwo:central_bank   "Royal Monetary Authority of Bhutan" ;
+        dwo:currencyOf     dwe:country_bhutan ;
+        dwo:iso_3166       356064 ;
+        dwo:iso_4217       "BTN" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q201799> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Bhutanese_ngultrum> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Bhutanese ngultrum" ;
+        skos:prefLabel     "Bhutanese ngultrum" .
+
+dwe:currency_boliviano
+        dwo:central_bank   "Central Bank of Bolivia" ;
+        dwo:currencyOf     dwe:country_bolivia ;
+        dwo:iso_3166       68 ;
+        dwo:iso_4217       "BOB" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q200737> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Bolivian_boliviano> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "boliviano" ;
+        skos:prefLabel     "boliviano" .
+
+dwe:currency_bosnia_and_herzegovina_convertible_mark
+        dwo:central_bank   "Central Bank of Bosnia and Herzegovina" ;
+        dwo:currencyOf     dwe:country_bosnia_and_herzegovina ;
+        dwo:iso_3166       977 ;
+        dwo:iso_4217       "BAM" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q179620> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Bosnia_and_Herzegovina_convertible_mark> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Bosnia and Herzegovina convertible mark" ;
+        skos:prefLabel     "Bosnia and Herzegovina convertible mark" .
+
+dwe:currency_botswana_pula
+        dwo:central_bank   "Bank of Botswana" ;
+        dwo:currencyOf     dwe:country_botswana ;
+        dwo:iso_3166       72 ;
+        dwo:iso_4217       "BWP" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q186794> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Botswana_pula> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Botswana pula" ;
+        skos:prefLabel     "Botswana pula" .
+
+dwe:currency_brazilian_real
+        dwo:central_bank   "Central Bank of Brazil" ;
+        dwo:currencyOf     dwe:country_brazil ;
+        dwo:iso_3166       986 ;
+        dwo:iso_4217       "BRL" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q173117> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Brazilian_real> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Brazilian real" ;
+        skos:prefLabel     "Brazilian real" .
+
+dwe:currency_brunei_dollar
+        dwo:central_bank   "Monetary Authority of Brunei Darussalam" ;
+        dwo:currencyOf     dwe:country_brunei ;
+        dwo:iso_3166       96 ;
+        dwo:iso_4217       "BND" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q206319> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Brunei_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Brunei dollar" ;
+        skos:prefLabel     "Brunei dollar" .
+
+dwe:currency_bulgarian_lev
+        dwo:central_bank   "Bulgarian National Bank" ;
+        dwo:currencyOf     dwe:country_bulgaria ;
+        dwo:iso_3166       975 ;
+        dwo:iso_4217       "BGN" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q172540> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Bulgarian_lev> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Bulgarian lev" ;
+        skos:prefLabel     "Bulgarian lev" .
+
+dwe:currency_burundian_franc
+        dwo:central_bank   "Bank of the Republic of Burundi" ;
+        dwo:currencyOf     dwe:country_burundi ;
+        dwo:iso_3166       108 ;
+        dwo:iso_4217       "BIF" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q238007> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Burundian_franc> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Burundian franc" ;
+        skos:prefLabel     "Burundian franc" .
+
+dwe:currency_canadian_dollar
+        dwo:central_bank   "Bank of Canada" ;
+        dwo:currencyOf     dwe:country_canada ;
+        dwo:iso_3166       124 ;
+        dwo:iso_4217       "CAD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q1104069> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Canadian_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Canadian dollar" ;
+        skos:prefLabel     "Canadian dollar" .
+
+dwe:currency_cape_verdean_escudo
+        dwo:currencyOf     dwe:country_cape_verde ;
+        dwo:iso_3166       132 ;
+        dwo:iso_4217       "CVE" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4591> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Cape_Verdean_escudo> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Cape Verdean escudo" ;
+        skos:prefLabel     "Cape Verdean escudo" .
+
+dwe:currency_cayman_islands_dollar
+        dwo:central_bank   "Cayman Islands Monetary Authority" ;
+        dwo:currencyOf     dwe:country_united_kingdom ;
+        dwo:iso_3166       826 ;
+        dwo:iso_4217       "KYD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q319885> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Cayman_Islands_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Cayman Islands dollar" ;
+        skos:prefLabel     "Cayman Islands dollar" .
+
+dwe:currency_central_african_cfa_franc
+        dwo:central_bank   "Bank of Central African States" ;
+        dwo:currencyOf     dwe:country_cameroon ;
+        dwo:currencyOf     dwe:country_central_african_republic ;
+        dwo:currencyOf     dwe:country_chad ;
+        dwo:currencyOf     dwe:country_equatorial_guinea ;
+        dwo:currencyOf     dwe:country_gabon ;
+        dwo:currencyOf     dwe:country_republic_of_the_congo ;
+        dwo:iso_3166       950 ;
+        dwo:iso_4217       "XAF" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q847739> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Central_African_CFA_franc> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Central African CFA franc" ;
+        skos:prefLabel     "Central African CFA franc" .
+
+dwe:currency_cfp_franc
+        dwo:central_bank   "Institut d'émission d'outre-mer" ;
+        dwo:currencyOf     dwe:country_france ;
+        dwo:iso_3166       978 ;
+        dwo:iso_4217       "XPF" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q214393> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/CFP_franc> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "CFP Franc" ;
+        skos:prefLabel     "CFP Franc" .
+
+dwe:currency_chilean_peso
+        dwo:central_bank   "Central Bank of Chile" ;
+        dwo:currencyOf     dwe:country_chile ;
+        dwo:iso_3166       152 ;
+        dwo:iso_4217       "CLP" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q200050> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Chilean_peso> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Chilean peso" ;
+        skos:prefLabel     "Chilean peso" .
+
+dwe:currency_colombian_peso
+        dwo:central_bank   "Banco de la República (Central Bank of Colombia)" ;
+        dwo:currencyOf     dwe:country_colombia ;
+        dwo:iso_3166       170 ;
+        dwo:iso_4217       "COP" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q244819> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Colombian_peso> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Colombian peso" ;
+        skos:prefLabel     "Colombian peso" .
+
+dwe:currency_comorian_franc
+        dwo:central_bank   "Central Bank of the Comoros" ;
+        dwo:currencyOf     dwe:country_comoros ;
+        dwo:iso_3166       174 ;
+        dwo:iso_4217       "KMF" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q267264> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Comorian_franc> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Comorian franc" ;
+        skos:prefLabel     "Comorian franc" .
+
+dwe:currency_congolese_franc
+        dwo:central_bank   "Central Bank of the Congo" ;
+        dwo:currencyOf     dwe:country_democratic_republic_of_the_congo ;
+        dwo:iso_3166       976 ;
+        dwo:iso_4217       "CDF" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4734> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Congolese_franc> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Congolese franc" ;
+        skos:prefLabel     "Congolese franc" .
+
+dwe:currency_costa_rican_col_n
+        dwo:central_bank   "Central Bank of Costa Rica" ;
+        dwo:currencyOf     dwe:country_costa_rica ;
+        dwo:iso_3166       188 ;
+        dwo:iso_4217       "CRC" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q242915> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Costa_Rican_col%C3%B3n> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Costa Rican colón" ;
+        skos:prefLabel     "Costa Rican colón" .
+
+dwe:currency_croatian_kuna
+        dwo:central_bank   "Croatian National Bank" ;
+        dwo:currencyOf     dwe:country_croatia ;
+        dwo:iso_3166       191 ;
+        dwo:iso_4217       "HRK" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q26360> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Croatian_kuna> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Croatian kuna" ;
+        skos:prefLabel     "Croatian kuna" .
+
+dwe:currency_cuban_convertible_peso
+        dwo:central_bank   "Central Bank of Cuba" ;
+        dwo:currencyOf     dwe:country_cuba ;
+        dwo:iso_3166       192931 ;
+        dwo:iso_4217       "CUC" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q731350> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Cuban_convertible_peso> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Cuban convertible peso" ;
+        skos:prefLabel     "Cuban convertible peso" .
+
+dwe:currency_cuban_peso
+        dwo:central_bank   "Central Bank of Cuba" ;
+        dwo:currencyOf     dwe:country_cuba ;
+        dwo:iso_3166       192931 ;
+        dwo:iso_4217       "CUP" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q201505> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Cuban_peso> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Cuban peso" ;
+        skos:prefLabel     "Cuban peso" .
+
+dwe:currency_czech_koruna
+        dwo:central_bank   "Czech National Bank" ;
+        dwo:currencyOf     dwe:country_czech_republic ;
+        dwo:iso_3166       203 ;
+        dwo:iso_4217       "CZK" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q131016> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Czech_koruna> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Czech koruna" ;
+        skos:prefLabel     "Czech koruna" .
+
+dwe:currency_danish_krone
+        dwo:central_bank   "Danmarks Nationalbank" ;
+        dwo:currencyOf     dwe:country_denmark ;
+        dwo:iso_3166       208 ;
+        dwo:iso_4217       "DKK" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q25417> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Danish_krone> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Danish krone" ;
+        skos:prefLabel     "Danish krone" .
+
+dwe:currency_djiboutian_franc
+        dwo:central_bank   "Central Bank of Djibouti" ;
+        dwo:currencyOf     dwe:country_djibouti ;
+        dwo:iso_3166       262 ;
+        dwo:iso_4217       "DJF" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4594> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Djiboutian_franc> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Djiboutian franc" ;
+        skos:prefLabel     "Djiboutian franc" .
+
+dwe:currency_dominican_peso
+        dwo:central_bank   "Central Bank of the Dominican Republic" ;
+        dwo:currencyOf     dwe:country_dominican_republic ;
+        dwo:iso_3166       214 ;
+        dwo:iso_4217       "DOP" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q242922> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Dominican_peso> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Dominican peso" ;
+        skos:prefLabel     "Dominican peso" .
+
+dwe:currency_eastern_caribbean_dollar
+        dwo:central_bank   "Eastern Caribbean Central Bank" ;
+        dwo:currencyOf     dwe:country_anguilla ;
+        dwo:currencyOf     dwe:country_antigua_and_barbuda ;
+        dwo:currencyOf     dwe:country_dominica ;
+        dwo:currencyOf     dwe:country_grenada ;
+        dwo:currencyOf     dwe:country_saint_kitts_and_nevis ;
+        dwo:currencyOf     dwe:country_saint_lucia ;
+        dwo:currencyOf     dwe:country_saint_vincent_and_the_grenadines ;
+        dwo:currencyOf     dwe:country_united_kingdom ;
+        dwo:iso_3166       826 ;
+        dwo:iso_3166       951 ;
+        dwo:iso_4217       "XCD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q26365> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Eastern_Caribbean_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Eastern Caribbean dollar" ;
+        skos:prefLabel     "Eastern Caribbean dollar" .
+
+dwe:currency_egyptian_pound
+        dwo:central_bank   "Central Bank of Egypt" ;
+        dwo:currencyOf     dwe:country_egypt ;
+        dwo:iso_3166       818 ;
+        dwo:iso_4217       "EGP" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q199462> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Egyptian_pound> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Egyptian pound" ;
+        skos:prefLabel     "Egyptian pound" .
+
+dwe:currency_eritrean_nakfa
+        dwo:central_bank   "Bank of Eritrea" ;
+        dwo:currencyOf     dwe:country_eritrea ;
+        dwo:iso_3166       232 ;
+        dwo:iso_4217       "ERN" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q171503> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Eritrean_nakfa> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Eritrean nakfa" ;
+        skos:prefLabel     "Eritrean nakfa" .
+
+dwe:currency_ethiopian_birr
+        dwo:central_bank   "National Bank of Ethiopia" ;
+        dwo:currencyOf     dwe:country_ethiopia ;
+        dwo:iso_3166       230 ;
+        dwo:iso_4217       "ETB" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q206243> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Ethiopian_birr> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Ethiopian birr" ;
+        skos:prefLabel     "Ethiopian birr" .
+
+dwe:currency_euro  dwo:central_bank  "European Central Bank" ;
+        dwo:currencyOf     dwe:country_andorra ;
+        dwo:currencyOf     dwe:country_austria ;
+        dwo:currencyOf     dwe:country_belgium ;
+        dwo:currencyOf     dwe:country_cyprus ;
+        dwo:currencyOf     dwe:country_estonia ;
+        dwo:currencyOf     dwe:country_finland ;
+        dwo:currencyOf     dwe:country_france ;
+        dwo:currencyOf     dwe:country_germany ;
+        dwo:currencyOf     dwe:country_greece ;
+        dwo:currencyOf     dwe:country_ireland ;
+        dwo:currencyOf     dwe:country_italy ;
+        dwo:currencyOf     dwe:country_kingdom_of_the_netherlands ;
+        dwo:currencyOf     dwe:country_latvia ;
+        dwo:currencyOf     dwe:country_lithuania ;
+        dwo:currencyOf     dwe:country_luxembourg ;
+        dwo:currencyOf     dwe:country_malta ;
+        dwo:currencyOf     dwe:country_monaco ;
+        dwo:currencyOf     dwe:country_portugal ;
+        dwo:currencyOf     dwe:country_san_marino ;
+        dwo:currencyOf     dwe:country_slovakia ;
+        dwo:currencyOf     dwe:country_slovenia ;
+        dwo:currencyOf     dwe:country_spain ;
+        dwo:currencyOf     dwe:country_vatican_city ;
+        dwo:iso_3166       978 ;
+        dwo:iso_4217       "EUR" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4916> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Euro> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "euro" ;
+        skos:prefLabel     "euro" .
+
+dwe:currency_falkland_islands_pound
+        dwo:central_bank   "Falkland Island Commissioners of Currency" ;
+        dwo:currencyOf     dwe:country_falkland_islands ;
+        dwo:iso_4217       "FKP" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q330044> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Falkland_Islands_pound> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Falkland Islands pound" ;
+        skos:prefLabel     "Falkland Islands pound" .
+
+dwe:currency_fijian_dollar
+        dwo:central_bank   "Reserve Bank of Fiji" ;
+        dwo:currencyOf     dwe:country_fiji ;
+        dwo:iso_3166       242 ;
+        dwo:iso_4217       "FJD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4592> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Fijian_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Fijian dollar" ;
+        skos:prefLabel     "Fijian dollar" .
+
+dwe:currency_gambian_dalasi
+        dwo:central_bank   "Central Bank of The Gambia" ;
+        dwo:currencyOf     dwe:country_the_gambia ;
+        dwo:iso_3166       270 ;
+        dwo:iso_4217       "GMD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q202885> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Gambian_dalasi> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Gambian dalasi" ;
+        skos:prefLabel     "Gambian dalasi" .
+
+dwe:currency_georgian_lari
+        dwo:central_bank   "National Bank of Georgia" ;
+        dwo:currencyOf     dwe:country_georgia ;
+        dwo:iso_3166       981 ;
+        dwo:iso_4217       "GEL" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4608> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Georgian_lari> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Georgian lari" ;
+        skos:prefLabel     "Georgian lari" .
+
+dwe:currency_ghana_cedi
+        dwo:central_bank   "Bank of Ghana" ;
+        dwo:currencyOf     dwe:country_ghana ;
+        dwo:iso_3166       936 ;
+        dwo:iso_4217       "GHS" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q183530> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Ghanaian_cedi> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Ghana cedi" ;
+        skos:prefLabel     "Ghana cedi" .
+
+dwe:currency_gibraltar_pound
+        dwo:central_bank   "Government of Gibraltar" ;
+        dwo:currencyOf     dwe:country_united_kingdom ;
+        dwo:iso_3166       826 ;
+        dwo:iso_4217       "GIP" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q41429> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Gibraltar_pound> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Gibraltar pound" ;
+        skos:prefLabel     "Gibraltar pound" .
+
+dwe:currency_guatemalan_quetzal
+        dwo:central_bank   "Bank of Guatemala" ;
+        dwo:currencyOf     dwe:country_guatemala ;
+        dwo:iso_3166       320 ;
+        dwo:iso_4217       "GTQ" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q207396> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Guatemalan_quetzal> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Guatemalan quetzal" ;
+        skos:prefLabel     "Guatemalan quetzal" .
+
+dwe:currency_guernsey_pound
+        dwo:currencyOf     dwe:country_guernsey ;
+        dwo:iso_3166       826 ;
+        dwo:iso_4217       "GGP" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q255792> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Guernsey_pound> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Guernsey pound" ;
+        skos:prefLabel     "Guernsey pound" .
+
+dwe:currency_guinean_franc
+        dwo:central_bank   "Central Bank of the Republic of Guinea" ;
+        dwo:currencyOf     dwe:country_guinea ;
+        dwo:iso_3166       324 ;
+        dwo:iso_4217       "GNF" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q213311> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Guinean_franc> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Guinean franc" ;
+        skos:prefLabel     "Guinean franc" .
+
+dwe:currency_guyanese_dollar
+        dwo:central_bank   "Bank of Guyana" ;
+        dwo:currencyOf     dwe:country_guyana ;
+        dwo:iso_3166       328 ;
+        dwo:iso_4217       "GYD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q213005> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Guyanese_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Guyanese dollar" ;
+        skos:prefLabel     "Guyanese dollar" .
+
+dwe:currency_haitian_gourde
+        dwo:central_bank   "Bank of the Republic of Haiti" ;
+        dwo:currencyOf     dwe:country_haiti ;
+        dwo:iso_3166       332840 ;
+        dwo:iso_4217       "HTG" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q203955> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Haitian_gourde> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Haitian gourde" ;
+        skos:prefLabel     "Haitian gourde" .
+
+dwe:currency_honduran_lempira
+        dwo:central_bank   "Central Bank of Honduras" ;
+        dwo:currencyOf     dwe:country_honduras ;
+        dwo:iso_3166       340 ;
+        dwo:iso_4217       "HNL" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4719> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Honduran_lempira> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Honduran lempira" ;
+        skos:prefLabel     "Honduran lempira" .
+
+dwe:currency_hong_kong_dollar
+        dwo:central_bank   "Hong Kong Monetary Authority" ;
+        dwo:currencyOf     dwe:country_people_s_republic_of_china ;
+        dwo:iso_3166       156 ;
+        dwo:iso_4217       "HKD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q31015> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Hong_Kong_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Hong Kong dollar" ;
+        skos:prefLabel     "Hong Kong dollar" .
+
+dwe:currency_hryvnia  dwo:central_bank  "National Bank of Ukraine" ;
+        dwo:currencyOf     dwe:country_ukraine ;
+        dwo:iso_3166       980 ;
+        dwo:iso_4217       "UAH" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q81893> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Ukrainian_hryvnia> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "hryvnia" ;
+        skos:prefLabel     "hryvnia" .
+
+dwe:currency_hungarian_forint
+        dwo:central_bank   "Hungarian National Bank" ;
+        dwo:currencyOf     dwe:country_hungary ;
+        dwo:iso_3166       348 ;
+        dwo:iso_4217       "HUF" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q47190> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Hungarian_forint> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Hungarian forint" ;
+        skos:prefLabel     "Hungarian forint" .
+
+dwe:currency_icelandic_kr_na
+        dwo:central_bank   "Central Bank of Iceland" ;
+        dwo:currencyOf     dwe:country_iceland ;
+        dwo:iso_3166       352 ;
+        dwo:iso_4217       "ISK" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q131473> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Icelandic_kr%C3%B3na> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Icelandic króna" ;
+        skos:prefLabel     "Icelandic króna" .
+
+dwe:currency_indian_rupee
+        dwo:central_bank   "Reserve Bank of India" ;
+        dwo:currencyOf     dwe:country_bhutan ;
+        dwo:currencyOf     dwe:country_india ;
+        dwo:currencyOf     dwe:country_nepal ;
+        dwo:iso_3166       356064 ;
+        dwo:iso_3166       356 ;
+        dwo:iso_3166       524 ;
+        dwo:iso_4217       "INR" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q80524> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Indian_rupee> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Indian rupee" ;
+        skos:prefLabel     "Indian rupee" .
+
+dwe:currency_indonesian_rupiah
+        dwo:central_bank   "Bank Indonesia" ;
+        dwo:currencyOf     dwe:country_indonesia ;
+        dwo:iso_3166       360 ;
+        dwo:iso_4217       "IDR" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q41588> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Indonesian_rupiah> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Indonesian Rupiah" ;
+        skos:prefLabel     "Indonesian Rupiah" .
+
+dwe:currency_iranian_rial
+        dwo:central_bank   "Central Bank of the Islamic Republic of Iran" ;
+        dwo:currencyOf     dwe:country_iran ;
+        dwo:iso_3166       364 ;
+        dwo:iso_4217       "IRR" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q188608> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Iranian_rial> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Iranian rial" ;
+        skos:prefLabel     "Iranian rial" .
+
+dwe:currency_iraqi_dinar
+        dwo:central_bank   "Central Bank of Iraq" ;
+        dwo:currencyOf     dwe:country_iraq ;
+        dwo:iso_3166       368 ;
+        dwo:iso_4217       "IQD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q193094> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Iraqi_dinar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Iraqi dinar" ;
+        skos:prefLabel     "Iraqi dinar" .
+
+dwe:currency_israeli_new_shekel
+        dwo:central_bank   "Bank of Israel" ;
+        dwo:currencyOf     dwe:country_israel ;
+        dwo:iso_3166       376 ;
+        dwo:iso_4217       "ILS" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q131309> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Israeli_new_shekel> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Israeli new shekel" ;
+        skos:prefLabel     "Israeli new shekel" .
+
+dwe:currency_jamaican_dollar
+        dwo:central_bank   "Bank of Jamaica" ;
+        dwo:currencyOf     dwe:country_jamaica ;
+        dwo:iso_3166       388 ;
+        dwo:iso_4217       "JMD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q209792> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Jamaican_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Jamaican dollar" ;
+        skos:prefLabel     "Jamaican dollar" .
+
+dwe:currency_japanese_yen
+        dwo:central_bank   "Bank of Japan" ;
+        dwo:currencyOf     dwe:country_japan ;
+        dwo:iso_3166       392 ;
+        dwo:iso_4217       "JPY" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q8146> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Japanese_yen> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Japanese yen" ;
+        skos:prefLabel     "Japanese yen" .
+
+dwe:currency_jersey_pound
+        dwo:currencyOf     dwe:country_jersey ;
+        dwo:iso_3166       826 ;
+        dwo:iso_4217       "JEP" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q270744> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Jersey_pound> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Jersey pound" ;
+        skos:prefLabel     "Jersey pound" .
+
+dwe:currency_jordanian_dinar
+        dwo:central_bank   "Central Bank of Jordan" ;
+        dwo:currencyOf     dwe:country_jordan ;
+        dwo:iso_3166       400 ;
+        dwo:iso_4217       "JOD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q203722> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Jordanian_dinar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Jordanian dinar" ;
+        skos:prefLabel     "Jordanian dinar" .
+
+dwe:currency_kazakhstani_tenge
+        dwo:central_bank   "National Bank of Kazakhstan" ;
+        dwo:currencyOf     dwe:country_kazakhstan ;
+        dwo:iso_3166       398 ;
+        dwo:iso_4217       "KZT" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q173751> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Kazakhstani_tenge> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Kazakhstani tenge" ;
+        skos:prefLabel     "Kazakhstani tenge" .
+
+dwe:currency_kenyan_shilling
+        dwo:central_bank   "Central Bank of Kenya" ;
+        dwo:currencyOf     dwe:country_kenya ;
+        dwo:iso_3166       404 ;
+        dwo:iso_4217       "KES" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q202882> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Kenyan_shilling> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Kenyan shilling" ;
+        skos:prefLabel     "Kenyan shilling" .
+
+dwe:currency_kuwaiti_dinar
+        dwo:central_bank   "Central Bank of Kuwait" ;
+        dwo:currencyOf     dwe:country_kuwait ;
+        dwo:iso_3166       414 ;
+        dwo:iso_4217       "KWD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q193098> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Kuwaiti_dinar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Kuwaiti dinar" ;
+        skos:prefLabel     "Kuwaiti dinar" .
+
+dwe:currency_kyat  dwo:central_bank  "Central Bank of Myanmar" ;
+        dwo:currencyOf     dwe:country_myanmar ;
+        dwo:iso_3166       104 ;
+        dwo:iso_4217       "MMK" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q201875> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Burmese_kyat> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "kyat" ;
+        skos:prefLabel     "kyat" .
+
+dwe:currency_kyrgyzstani_som
+        dwo:central_bank   "National Bank of the Kyrgyz Republic" ;
+        dwo:currencyOf     dwe:country_kyrgyzstan ;
+        dwo:iso_3166       417 ;
+        dwo:iso_4217       "KGS" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q35881> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Kyrgyzstani_som> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Kyrgyzstani som" ;
+        skos:prefLabel     "Kyrgyzstani som" .
+
+dwe:currency_lao_kip  dwo:central_bank  "Bank of the Lao P.D.R." ;
+        dwo:currencyOf     dwe:country_laos ;
+        dwo:iso_3166       418 ;
+        dwo:iso_4217       "LAK" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q200055> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Lao_kip> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Lao kip" ;
+        skos:prefLabel     "Lao kip" .
+
+dwe:currency_lebanese_pound
+        dwo:central_bank   "Banque du Liban" ;
+        dwo:currencyOf     dwe:country_lebanon ;
+        dwo:iso_3166       422 ;
+        dwo:iso_4217       "LBP" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q201880> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Lebanese_pound> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Lebanese pound" ;
+        skos:prefLabel     "Lebanese pound" .
+
+dwe:currency_lesotho_loti
+        dwo:central_bank   "Central Bank of Lesotho" ;
+        dwo:currencyOf     dwe:country_lesotho ;
+        dwo:iso_3166       426710 ;
+        dwo:iso_4217       "LSL" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q208039> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Lesotho_loti> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Lesotho loti" ;
+        skos:prefLabel     "Lesotho loti" .
+
+dwe:currency_liberian_dollar
+        dwo:central_bank   "Central Bank of Liberia" ;
+        dwo:currencyOf     dwe:country_liberia ;
+        dwo:iso_3166       430 ;
+        dwo:iso_4217       "LRD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q242988> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Liberian_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Liberian dollar" ;
+        skos:prefLabel     "Liberian dollar" .
+
+dwe:currency_libyan_dinar
+        dwo:central_bank   "Central Bank of Libya" ;
+        dwo:currencyOf     dwe:country_libya ;
+        dwo:iso_3166       434 ;
+        dwo:iso_4217       "LYD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q190699> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Libyan_dinar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Libyan dinar" ;
+        skos:prefLabel     "Libyan dinar" .
+
+dwe:currency_macanese_pataca
+        dwo:central_bank   "Monetary Authority of Macao" ;
+        dwo:currencyOf     dwe:country_macau ;
+        dwo:iso_3166       446 ;
+        dwo:iso_4217       "MOP" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q241214> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Macanese_pataca> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Macanese pataca" ;
+        skos:prefLabel     "Macanese pataca" .
+
+dwe:currency_macedonian_denar
+        dwo:central_bank   "National Bank of the Republic of Macedonia" ;
+        dwo:currencyOf     dwe:country_macedonia ;
+        dwo:iso_3166       807 ;
+        dwo:iso_4217       "MKD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q177875> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Macedonian_denar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Macedonian denar" ;
+        skos:prefLabel     "Macedonian denar" .
+
+dwe:currency_malagasy_ariary
+        dwo:central_bank   "Central Bank of Madagascar" ;
+        dwo:currencyOf     dwe:country_madagascar ;
+        dwo:iso_3166       969 ;
+        dwo:iso_4217       "MGA" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4584> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Malagasy_ariary> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Malagasy ariary" ;
+        skos:prefLabel     "Malagasy ariary" .
+
+dwe:currency_malawian_kwacha
+        dwo:central_bank   "Reserve Bank of Malawi" ;
+        dwo:currencyOf     dwe:country_malawi ;
+        dwo:iso_3166       454 ;
+        dwo:iso_4217       "MWK" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q211694> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Malawian_kwacha> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Malawian kwacha" ;
+        skos:prefLabel     "Malawian kwacha" .
+
+dwe:currency_malaysian_ringgit
+        dwo:central_bank   "Bank Negara Malaysia" ;
+        dwo:currencyOf     dwe:country_malaysia ;
+        dwo:iso_3166       458 ;
+        dwo:iso_4217       "MYR" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q163712> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Malaysian_ringgit> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Malaysian ringgit" ;
+        skos:prefLabel     "Malaysian ringgit" .
+
+dwe:currency_maldivian_rufiyaa
+        dwo:central_bank   "Maldives Monetary Authority" ;
+        dwo:currencyOf     dwe:country_maldives ;
+        dwo:iso_3166       462 ;
+        dwo:iso_4217       "MVR" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q206600> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Maldivian_rufiyaa> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Maldivian rufiyaa" ;
+        skos:prefLabel     "Maldivian rufiyaa" .
+
+dwe:currency_manx_pound
+        dwo:currencyOf     dwe:country_isle_of_man ;
+        dwo:iso_3166       826 ;
+        dwo:iso_4217       "IMP" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q27614> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Manx_pound> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Manx pound" ;
+        skos:prefLabel     "Manx pound" .
+
+dwe:currency_mauritanian_ouguiya
+        dwo:central_bank   "Central Bank of Mauritania" ;
+        dwo:currencyOf     dwe:country_mauritania ;
+        dwo:iso_3166       478 ;
+        dwo:iso_4217       "MRO" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q207024> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Mauritanian_ouguiya> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Mauritanian ouguiya" ;
+        skos:prefLabel     "Mauritanian ouguiya" .
+
+dwe:currency_mauritian_rupee
+        dwo:central_bank   "Bank of Mauritius" ;
+        dwo:currencyOf     dwe:country_mauritius ;
+        dwo:iso_3166       480 ;
+        dwo:iso_4217       "MUR" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q212967> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Mauritian_rupee> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Mauritian rupee" ;
+        skos:prefLabel     "Mauritian rupee" .
+
+dwe:currency_mexican_peso
+        dwo:central_bank   "Bank of Mexico" ;
+        dwo:currencyOf     dwe:country_mexico ;
+        dwo:iso_3166       484 ;
+        dwo:iso_4217       "MXN" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4730> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Mexican_peso> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Mexican peso" ;
+        skos:prefLabel     "Mexican peso" .
+
+dwe:currency_moldovan_leu
+        dwo:central_bank   "National Bank of Moldova" ;
+        dwo:currencyOf     dwe:country_moldova ;
+        dwo:iso_3166       498 ;
+        dwo:iso_4217       "MDL" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q181129> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Moldovan_leu> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Moldovan leu" ;
+        skos:prefLabel     "Moldovan leu" .
+
+dwe:currency_mongolian_t_gr_g
+        dwo:central_bank   "Bank of Mongolia" ;
+        dwo:currencyOf     dwe:country_mongolia ;
+        dwo:iso_3166       496 ;
+        dwo:iso_4217       "MNT" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q183435> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Mongolian_t%C3%B6gr%C3%B6g> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Mongolian tögrög" ;
+        skos:prefLabel     "Mongolian tögrög" .
+
+dwe:currency_moroccan_dirham
+        dwo:central_bank   "Bank Al-Maghrib" ;
+        dwo:currencyOf     dwe:country_morocco ;
+        dwo:iso_3166       504 ;
+        dwo:iso_4217       "MAD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q200192> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Moroccan_dirham> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Moroccan dirham" ;
+        skos:prefLabel     "Moroccan dirham" .
+
+dwe:currency_namibian_dollar
+        dwo:central_bank   "Bank of Namibia" ;
+        dwo:currencyOf     dwe:country_namibia ;
+        dwo:iso_3166       516710 ;
+        dwo:iso_4217       "NAD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q202462> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Namibian_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Namibian dollar" ;
+        skos:prefLabel     "Namibian dollar" .
+
+dwe:currency_nepalese_rupee
+        dwo:central_bank   "Nepal Rastra Bank" ;
+        dwo:currencyOf     dwe:country_nepal ;
+        dwo:iso_3166       524 ;
+        dwo:iso_4217       "NPR" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q202895> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Nepalese_rupee> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Nepalese rupee" ;
+        skos:prefLabel     "Nepalese rupee" .
+
+dwe:currency_new_taiwan_dollar
+        dwo:central_bank   "Central Bank of the Republic of China" ;
+        dwo:currencyOf     dwe:country_taiwan ;
+        dwo:iso_4217       "TWD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q208526> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/New_Taiwan_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "New Taiwan dollar" ;
+        skos:prefLabel     "New Taiwan dollar" .
+
+dwe:currency_new_zealand_dollar
+        dwo:central_bank   "Reserve Bank of New Zealand" ;
+        dwo:currencyOf     dwe:country_new_zealand ;
+        dwo:iso_3166       554 ;
+        dwo:iso_4217       "NZD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q1472704> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/New_Zealand_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "New Zealand dollar" ;
+        skos:prefLabel     "New Zealand dollar" .
+
+dwe:currency_nicaraguan_c_rdoba
+        dwo:central_bank   "Central Bank of Nicaragua" ;
+        dwo:currencyOf     dwe:country_nicaragua ;
+        dwo:iso_3166       558 ;
+        dwo:iso_4217       "NIO" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q207312> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Nicaraguan_c%C3%B3rdoba> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Nicaraguan córdoba" ;
+        skos:prefLabel     "Nicaraguan córdoba" .
+
+dwe:currency_nigerian_naira
+        dwo:central_bank   "Central Bank of Nigeria" ;
+        dwo:currencyOf     dwe:country_nigeria ;
+        dwo:iso_3166       566 ;
+        dwo:iso_4217       "NGN" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q203567> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Nigerian_naira> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Nigerian naira" ;
+        skos:prefLabel     "Nigerian naira" .
+
+dwe:currency_north_korean_won
+        dwo:central_bank   "Central Bank of the Democratic People's Republic of Korea" ;
+        dwo:currencyOf     dwe:country_north_korea ;
+        dwo:iso_3166       408 ;
+        dwo:iso_4217       "KPW" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q106720> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/North_Korean_won> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "North Korean won" ;
+        skos:prefLabel     "North Korean won" .
+
+dwe:currency_norwegian_krone
+        dwo:central_bank   "Norges Bank" ;
+        dwo:currencyOf     dwe:country_norway ;
+        dwo:iso_3166       578 ;
+        dwo:iso_4217       "NOK" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q132643> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Norwegian_krone> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Norwegian krone" ;
+        skos:prefLabel     "Norwegian krone" .
+
+dwe:currency_omani_rial
+        dwo:central_bank   "Central Bank of Oman" ;
+        dwo:currencyOf     dwe:country_oman ;
+        dwo:iso_3166       512 ;
+        dwo:iso_4217       "OMR" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q272290> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Omani_rial> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Omani rial" ;
+        skos:prefLabel     "Omani rial" .
+
+dwe:currency_pakistani_rupee
+        dwo:central_bank   "State Bank of Pakistan" ;
+        dwo:currencyOf     dwe:country_pakistan ;
+        dwo:iso_3166       586 ;
+        dwo:iso_4217       "PKR" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q188289> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Pakistani_rupee> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Pakistani rupee" ;
+        skos:prefLabel     "Pakistani rupee" .
+
+dwe:currency_panamanian_balboa
+        dwo:central_bank   "National Bank of Panama" ;
+        dwo:currencyOf     dwe:country_panama ;
+        dwo:iso_3166       590840 ;
+        dwo:iso_4217       "PAB" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q210472> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Panamanian_balboa> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Panamanian balboa" ;
+        skos:prefLabel     "Panamanian balboa" .
+
+dwe:currency_papua_new_guinean_kina
+        dwo:central_bank   "Bank of Papua New Guinea" ;
+        dwo:currencyOf     dwe:country_papua_new_guinea ;
+        dwo:iso_3166       598 ;
+        dwo:iso_4217       "PGK" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q200759> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Papua_New_Guinean_kina> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Papua New Guinean kina" ;
+        skos:prefLabel     "Papua New Guinean kina" .
+
+dwe:currency_paraguayan_guaran_
+        dwo:central_bank   "Central Bank of Paraguay" ;
+        dwo:currencyOf     dwe:country_paraguay ;
+        dwo:iso_3166       600 ;
+        dwo:iso_4217       "PYG" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q207514> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Paraguayan_guaran%C3%AD> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Paraguayan guaraní" ;
+        skos:prefLabel     "Paraguayan guaraní" .
+
+dwe:currency_peruvian_sol
+        dwo:central_bank   "Central Reserve Bank of Peru" ;
+        dwo:currencyOf     dwe:country_peru ;
+        dwo:iso_3166       604 ;
+        dwo:iso_4217       "PEN" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q204656> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Peruvian_sol> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Peruvian sol" ;
+        skos:prefLabel     "Peruvian sol" .
+
+dwe:currency_philippine_peso
+        dwo:central_bank   "Bangko Sentral ng Pilipinas" ;
+        dwo:currencyOf     dwe:country_philippines ;
+        dwo:iso_3166       608 ;
+        dwo:iso_4217       "PHP" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q17193> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Philippine_peso> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Philippine peso" ;
+        skos:prefLabel     "Philippine peso" .
+
+dwe:currency_pound_sterling
+        dwo:central_bank   "Bank of England" ;
+        dwo:currencyOf     dwe:country_united_kingdom ;
+        dwo:iso_3166       826 ;
+        dwo:iso_4217       "GBP" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q25224> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Pound_sterling> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "pound sterling" ;
+        skos:prefLabel     "pound sterling" .
+
+dwe:currency_qatari_riyal
+        dwo:central_bank   "Qatar Central Bank" ;
+        dwo:currencyOf     dwe:country_qatar ;
+        dwo:iso_3166       634 ;
+        dwo:iso_4217       "QAR" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q206386> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Qatari_riyal> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Qatari riyal" ;
+        skos:prefLabel     "Qatari riyal" .
+
+dwe:currency_renminbi
+        dwo:central_bank   "People's Bank of China" ;
+        dwo:currencyOf     dwe:country_people_s_republic_of_china ;
+        dwo:iso_3166       156 ;
+        dwo:iso_4217       "CNY" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q39099> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Renminbi> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "renminbi" ;
+        skos:prefLabel     "renminbi" .
+
+dwe:currency_riel  dwo:central_bank  "National Bank of Cambodia" ;
+        dwo:currencyOf     dwe:country_cambodia ;
+        dwo:iso_3166       116 ;
+        dwo:iso_4217       "KHR" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q204737> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Cambodian_riel> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "riel" ;
+        skos:prefLabel     "riel" .
+
+dwe:currency_romanian_leu
+        dwo:central_bank   "National Bank of Romania" ;
+        dwo:currencyOf     dwe:country_romania ;
+        dwo:iso_3166       946 ;
+        dwo:iso_4217       "RON" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q131645> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Romanian_leu> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Romanian leu" ;
+        skos:prefLabel     "Romanian leu" .
+
+dwe:currency_russian_ruble
+        dwo:central_bank   "Central Bank of Russia" ;
+        dwo:currencyOf     dwe:country_russia ;
+        dwo:iso_3166       643 ;
+        dwo:iso_4217       "RUB" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q41044> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Russian_ruble> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Russian ruble" ;
+        skos:prefLabel     "Russian ruble" .
+
+dwe:currency_rwandan_franc
+        dwo:central_bank   "National Bank of Rwanda" ;
+        dwo:currencyOf     dwe:country_rwanda ;
+        dwo:iso_3166       646 ;
+        dwo:iso_4217       "RWF" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4741> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Rwandan_franc> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Rwandan franc" ;
+        skos:prefLabel     "Rwandan franc" .
+
+dwe:currency_saint_helena_pound
+        dwo:currencyOf     dwe:country_united_kingdom ;
+        dwo:iso_3166       826 ;
+        dwo:iso_4217       "SHP" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q374453> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Saint_Helena_pound> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Saint Helena pound" ;
+        skos:prefLabel     "Saint Helena pound" .
+
+dwe:currency_samoan_t_l_
+        dwo:central_bank   "Central Bank of Samoa" ;
+        dwo:currencyOf     dwe:country_samoa ;
+        dwo:iso_3166       882 ;
+        dwo:iso_4217       "WST" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4588> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Samoan_t%C4%81l%C4%81> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Samoan tālā" ;
+        skos:prefLabel     "Samoan tālā" .
+
+dwe:currency_saudi_riyal
+        dwo:central_bank   "Saudi Arabian Monetary Agency" ;
+        dwo:currencyOf     dwe:country_saudi_arabia ;
+        dwo:iso_3166       682 ;
+        dwo:iso_4217       "SAR" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q199857> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Saudi_riyal> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Saudi riyal" ;
+        skos:prefLabel     "Saudi riyal" .
+
+dwe:currency_serbian_dinar
+        dwo:central_bank   "National Bank of Serbia" ;
+        dwo:currencyOf     dwe:country_serbia ;
+        dwo:iso_3166       941 ;
+        dwo:iso_4217       "RSD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q172524> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Serbian_dinar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Serbian dinar" ;
+        skos:prefLabel     "Serbian dinar" .
+
+dwe:currency_seychellois_rupee
+        dwo:central_bank   "Central Bank of Seychelles" ;
+        dwo:currencyOf     dwe:country_seychelles ;
+        dwo:iso_3166       690 ;
+        dwo:iso_4217       "SCR" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4595> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Seychellois_rupee> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Seychellois rupee" ;
+        skos:prefLabel     "Seychellois rupee" .
+
+dwe:currency_sierra_leonean_leone
+        dwo:central_bank   "Bank of Sierra Leone" ;
+        dwo:currencyOf     dwe:country_sierra_leone ;
+        dwo:iso_3166       694 ;
+        dwo:iso_4217       "SLL" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4587> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Sierra_Leonean_leone> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Sierra Leonean leone" ;
+        skos:prefLabel     "Sierra Leonean leone" .
+
+dwe:currency_singapore_dollar
+        dwo:central_bank   "Monetary Authority of Singapore" ;
+        dwo:currencyOf     dwe:country_singapore ;
+        dwo:iso_3166       702 ;
+        dwo:iso_4217       "SGD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q190951> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Singapore_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Singapore dollar" ;
+        skos:prefLabel     "Singapore dollar" .
+
+dwe:currency_somali_shilling
+        dwo:central_bank   "Central Bank of Somalia" ;
+        dwo:currencyOf     dwe:country_somalia ;
+        dwo:iso_3166       706 ;
+        dwo:iso_4217       "SOS" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4603> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Somali_shilling> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Somali shilling" ;
+        skos:prefLabel     "Somali shilling" .
+
+dwe:currency_s_o_tom__and_pr_ncipe_dobra
+        dwo:central_bank   "Central Bank of São Tomé and Príncipe" ;
+        dwo:currencyOf     dwe:country_s_o_tom__and_pr_ncipe ;
+        dwo:iso_3166       678 ;
+        dwo:iso_4217       "STN" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q193712> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/S%C3%A3o_Tom%C3%A9_and_Pr%C3%ADncipe_dobra> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "São Tomé and Príncipe dobra" ;
+        skos:prefLabel     "São Tomé and Príncipe dobra" .
+
+dwe:currency_south_african_rand
+        dwo:central_bank   "South African Reserve Bank" ;
+        dwo:currencyOf     dwe:country_south_africa ;
+        dwo:iso_3166       710 ;
+        dwo:iso_4217       "ZAR" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q181907> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/South_African_rand> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "South African rand" ;
+        skos:prefLabel     "South African rand" .
+
+dwe:currency_south_korean_won
+        dwo:central_bank   "Bank of Korea" ;
+        dwo:currencyOf     dwe:country_south_korea ;
+        dwo:iso_3166       410 ;
+        dwo:iso_4217       "KRW" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q202040> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/South_Korean_won> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "South Korean won" ;
+        skos:prefLabel     "South Korean won" .
+
+dwe:currency_sri_lankan_rupee
+        dwo:central_bank   "Central Bank of Sri Lanka" ;
+        dwo:currencyOf     dwe:country_sri_lanka ;
+        dwo:iso_3166       144 ;
+        dwo:iso_4217       "LKR" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4596> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Sri_Lankan_rupee> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Sri Lankan rupee" ;
+        skos:prefLabel     "Sri Lankan rupee" .
+
+dwe:currency_surinamese_dollar
+        dwo:central_bank   "Centrale Bank van Suriname" ;
+        dwo:currencyOf     dwe:country_suriname ;
+        dwo:iso_3166       968 ;
+        dwo:iso_4217       "SRD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q202036> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Surinamese_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Surinamese dollar" ;
+        skos:prefLabel     "Surinamese dollar" .
+
+dwe:currency_swazi_lilangeni
+        dwo:central_bank   "Central Bank of Swaziland" ;
+        dwo:currencyOf     dwe:country_swaziland ;
+        dwo:iso_3166       748 ;
+        dwo:iso_4217       "SZL" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4823> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Swazi_lilangeni> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Swazi lilangeni" ;
+        skos:prefLabel     "Swazi lilangeni" .
+
+dwe:currency_swedish_krona
+        dwo:central_bank   "Sveriges Riksbank" ;
+        dwo:currencyOf     dwe:country_sweden ;
+        dwo:iso_3166       752 ;
+        dwo:iso_4217       "SEK" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q122922> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Swedish_krona> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Swedish krona" ;
+        skos:prefLabel     "Swedish krona" .
+
+dwe:currency_swiss_franc
+        dwo:central_bank   "Swiss National Bank" ;
+        dwo:currencyOf     dwe:country_liechtenstein ;
+        dwo:currencyOf     dwe:country_switzerland ;
+        dwo:iso_3166       756 ;
+        dwo:iso_4217       "CHF" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q25344> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Swiss_franc> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Swiss franc" ;
+        skos:prefLabel     "Swiss franc" .
+
+dwe:currency_syrian_pound
+        dwo:central_bank   "Central Bank of Syria" ;
+        dwo:currencyOf     dwe:country_syria ;
+        dwo:iso_3166       760 ;
+        dwo:iso_4217       "SYP" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q240468> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Syrian_pound> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Syrian pound" ;
+        skos:prefLabel     "Syrian pound" .
+
+dwe:currency_tajikistani_somoni
+        dwo:central_bank   "National Bank of Tajikistan" ;
+        dwo:currencyOf     dwe:country_tajikistan ;
+        dwo:iso_3166       972 ;
+        dwo:iso_4217       "TJS" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q199886> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Tajikistani_somoni> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Tajikistani somoni" ;
+        skos:prefLabel     "Tajikistani somoni" .
+
+dwe:currency_taka  dwo:central_bank  "Bangladesh Bank" ;
+        dwo:currencyOf     dwe:country_bangladesh ;
+        dwo:iso_3166       50 ;
+        dwo:iso_4217       "BDT" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q194453> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Bangladeshi_taka> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "taka" ;
+        skos:prefLabel     "taka" .
+
+dwe:currency_tanzanian_shilling
+        dwo:central_bank   "Bank of Tanzania" ;
+        dwo:currencyOf     dwe:country_tanzania ;
+        dwo:iso_3166       834 ;
+        dwo:iso_4217       "TZS" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4589> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Tanzanian_shilling> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Tanzanian shilling" ;
+        skos:prefLabel     "Tanzanian shilling" .
+
+dwe:currency_thai_baht
+        dwo:central_bank   "Bank of Thailand" ;
+        dwo:currencyOf     dwe:country_thailand ;
+        dwo:iso_3166       764 ;
+        dwo:iso_4217       "THB" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q177882> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Thai_baht> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Thai baht" ;
+        skos:prefLabel     "Thai baht" .
+
+dwe:currency_tongan_pa_anga
+        dwo:central_bank   "National Reserve Bank of Tonga" ;
+        dwo:currencyOf     dwe:country_tonga ;
+        dwo:iso_3166       776 ;
+        dwo:iso_4217       "TOP" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4613> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Tongan_pa%CA%BBanga> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Tongan paʻanga" ;
+        skos:prefLabel     "Tongan paʻanga" .
+
+dwe:currency_trinidad_and_tobago_dollar
+        dwo:central_bank   "Central Bank of Trinidad and Tobago" ;
+        dwo:currencyOf     dwe:country_trinidad_and_tobago ;
+        dwo:iso_3166       780 ;
+        dwo:iso_4217       "TTD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q242890> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Trinidad_and_Tobago_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Trinidad and Tobago dollar" ;
+        skos:prefLabel     "Trinidad and Tobago dollar" .
+
+dwe:currency_tunisian_dinar
+        dwo:central_bank   "Central Bank of Tunisia" ;
+        dwo:currencyOf     dwe:country_tunisia ;
+        dwo:iso_3166       788 ;
+        dwo:iso_4217       "TND" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4602> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Tunisian_dinar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Tunisian dinar" ;
+        skos:prefLabel     "Tunisian dinar" .
+
+dwe:currency_turkish_lira
+        dwo:central_bank   "Central Bank of Turkey" ;
+        dwo:currencyOf     dwe:country_turkey ;
+        dwo:iso_3166       949 ;
+        dwo:iso_4217       "TRY" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q172872> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Turkish_lira> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Turkish lira" ;
+        skos:prefLabel     "Turkish lira" .
+
+dwe:currency_turkmenistan_manat
+        dwo:central_bank   "Central Bank of Turkmenistan" ;
+        dwo:currencyOf     dwe:country_turkmenistan ;
+        dwo:iso_3166       934 ;
+        dwo:iso_4217       "TMT" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q486637> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Turkmenistan_manat> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Turkmenistan manat" ;
+        skos:prefLabel     "Turkmenistan manat" .
+
+dwe:currency_tuvaluan_dollar
+        dwo:currencyOf     dwe:country_tuvalu ;
+        dwo:iso_3166       36 ;
+        dwo:iso_4217       "TVD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4406> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Tuvaluan_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Tuvaluan dollar" ;
+        skos:prefLabel     "Tuvaluan dollar" .
+
+dwe:currency_ugandan_shilling
+        dwo:central_bank   "Bank of Uganda" ;
+        dwo:currencyOf     dwe:country_uganda ;
+        dwo:iso_3166       800 ;
+        dwo:iso_4217       "UGX" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4598> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Ugandan_shilling> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Ugandan shilling" ;
+        skos:prefLabel     "Ugandan shilling" .
+
+dwe:currency_united_arab_emirates_dirham
+        dwo:central_bank   "Central Bank of the United Arab Emirates" ;
+        dwo:currencyOf     dwe:country_united_arab_emirates ;
+        dwo:iso_3166       784 ;
+        dwo:iso_4217       "AED" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q200294> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/United_Arab_Emirates_dirham> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "United Arab Emirates dirham" ;
+        skos:prefLabel     "United Arab Emirates dirham" .
+
+dwe:currency_united_states_dollar
+        dwo:central_bank   "Federal Reserve System" ;
+        dwo:currencyOf     dwe:country_united_states_of_america ;
+        dwo:iso_3166       840 ;
+        dwo:iso_4217       "USD" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q4917> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/United_States_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "United States dollar" ;
+        skos:prefLabel     "United States dollar" .
+
+dwe:currency_uruguayan_peso
+        dwo:central_bank   "Central Bank of Uruguay" ;
+        dwo:currencyOf     dwe:country_uruguay ;
+        dwo:iso_3166       858 ;
+        dwo:iso_4217       "UYU" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q209272> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Uruguayan_peso> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Uruguayan peso" ;
+        skos:prefLabel     "Uruguayan peso" .
+
+dwe:currency_uzbekistani_som
+        dwo:central_bank   "Central Bank of Uzbekistan" ;
+        dwo:currencyOf     dwe:country_uzbekistan ;
+        dwo:iso_3166       860 ;
+        dwo:iso_4217       "UZS" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q487888> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Uzbekistani_so%CA%BBm> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Uzbekistani som" ;
+        skos:prefLabel     "Uzbekistani som" .
+
+dwe:currency_vanuatu_vatus
+        dwo:central_bank   "Reserve Bank of Vanuatu" ;
+        dwo:currencyOf     dwe:country_vanuatu ;
+        dwo:iso_3166       548 ;
+        dwo:iso_4217       "VUV" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q207523> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Vanuatu_vatu> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Vanuatu vatus" ;
+        skos:prefLabel     "Vanuatu vatus" .
+
+dwe:currency_vietnamese_dong
+        dwo:central_bank   "State Bank of Vietnam" ;
+        dwo:currencyOf     dwe:country_vietnam ;
+        dwo:iso_3166       704 ;
+        dwo:iso_4217       "VND" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q192090> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Vietnamese_%C4%91%E1%BB%93ng> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Vietnamese dong" ;
+        skos:prefLabel     "Vietnamese dong" .
+
+dwe:currency_west_african_cfa_franc
+        dwo:central_bank   "Central Bank of West African States" ;
+        dwo:currencyOf     dwe:country_benin ;
+        dwo:currencyOf     dwe:country_burkina_faso ;
+        dwo:currencyOf     dwe:country_guinea_bissau ;
+        dwo:currencyOf     dwe:country_ivory_coast ;
+        dwo:currencyOf     dwe:country_mali ;
+        dwo:currencyOf     dwe:country_niger ;
+        dwo:currencyOf     dwe:country_senegal ;
+        dwo:currencyOf     dwe:country_togo ;
+        dwo:iso_3166       952 ;
+        dwo:iso_4217       "XOF" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q861690> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/West_African_CFA_franc> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "West African CFA franc" ;
+        skos:prefLabel     "West African CFA franc" .
+
+dwe:currency_yemeni_rial
+        dwo:central_bank   "Central Bank of Yemen" ;
+        dwo:currencyOf     dwe:country_yemen ;
+        dwo:iso_3166       886 ;
+        dwo:iso_4217       "YER" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q240512> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Yemeni_rial> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Yemeni rial" ;
+        skos:prefLabel     "Yemeni rial" .
+
+dwe:currency_zambian_kwacha
+        dwo:central_bank   "Bank of Zambia" ;
+        dwo:currencyOf     dwe:country_zambia ;
+        dwo:iso_3166       967 ;
+        dwo:iso_4217       "ZMW" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q73408> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Zambian_kwacha> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Zambian kwacha" ;
+        skos:prefLabel     "Zambian kwacha" .
+
+dwe:currency_zimbabwean_dollar
+        dwo:central_bank   "Reserve Bank of Zimbabwe" ;
+        dwo:currencyOf     dwe:country_zimbabwe ;
+        dwo:iso_3166       932 ;
+        dwo:iso_4217       "ZWL" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q182803> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Zimbabwean_dollar> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "Zimbabwean dollar" ;
+        skos:prefLabel     "Zimbabwean dollar" .
+
+dwe:currency_z_oty  dwo:central_bank  "Narodowy Bank Polski" ;
+        dwo:currencyOf     dwe:country_poland ;
+        dwo:iso_3166       985 ;
+        dwo:iso_4217       "PLN" ;
+        dwo:wikidataLink   <http://www.wikidata.org/entity/Q123213> ;
+        dwo:wikipediaLink  <https://en.wikipedia.org/wiki/Polish_z%C5%82oty> ;
+        rdf:type           dwo:Currency ;
+        rdfs:label         "złoty" ;
+        skos:prefLabel     "złoty" .

@@ -1,0 +1,163 @@
+@prefix dwo:   <https://ontology.data.world/v0#> .
+@prefix dwe:   <https://entities.data.world/> .
+@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
+
+dwe:census_division_new_england
+        a       dwo:Census_Division ;
+        skos:prefLabel "New England"  ;
+        dwo:partOfCensusRegion dwe:census_region_northeast.
+
+dwe:census_division_middle_atlantic
+        a       dwo:Census_Division ;
+        skos:prefLabel "Middle Atlantic"  ;
+        dwo:partOfCensusRegion dwe:census_region_northeast.
+
+dwe:census_division_east_north_central
+        a       dwo:Census_Division ;
+        skos:prefLabel "East North Central"  ;
+        dwo:partOfCensusRegion dwe:census_region_midwest.
+
+dwe:census_division_west_north_central
+        a       dwo:Census_Division ;
+        skos:prefLabel "West North Central" ;
+        dwo:partOfCensusRegion dwe:census_region_midwest.
+
+dwe:census_division_south_atlantic
+        a       dwo:Census_Division ;
+        skos:prefLabel "South Atlantic"  ;
+        dwo:partOfCensusRegion dwe:census_region_south.
+
+dwe:census_division_east_south_central
+        a       dwo:Census_Division ;
+        skos:prefLabel "East South Central"  ;
+        dwo:partOfCensusRegion dwe:census_region_south.
+
+dwe:census_division_west_south_central
+        a       dwo:Census_Division ;
+        skos:prefLabel "West South Central"  ;
+        dwo:partOfCensusRegion dwe:census_region_south.
+
+dwe:census_division_mountain
+        a       dwo:Census_Division ;
+        skos:prefLabel "Mountain"  ;
+        dwo:partOfCensusRegion dwe:census_region_west.
+
+
+dwe:census_division_pacific
+        a       dwo:Census_Division ;
+        skos:prefLabel "Pacific"  ;
+        dwo:partOfCensusRegion dwe:census_region_west.
+
+
+dwe:usstate_maine
+        dwo:partOfCensusDivision dwe:census_division_new_england.
+dwe:usstate_rhode_island
+        dwo:partOfCensusDivision dwe:census_division_new_england.
+dwe:usstate_new_hampshire
+        dwo:partOfCensusDivision dwe:census_division_new_england.
+dwe:usstate_vermont
+        dwo:partOfCensusDivision dwe:census_division_new_england.
+dwe:usstate_massachusetts
+        dwo:partOfCensusDivision dwe:census_division_new_england.
+dwe:usstate_connecticut
+        dwo:partOfCensusDivision dwe:census_division_new_england.
+
+dwe:usstate_new_york
+        dwo:partOfCensusDivision dwe:census_division_middle_atlantic.
+dwe:usstate_new_jersey
+        dwo:partOfCensusDivision dwe:census_division_middle_atlantic.
+dwe:usstate_pennsylvania
+        dwo:partOfCensusDivision dwe:census_division_middle_atlantic.
+
+dwe:usstate_ohio
+        dwo:partOfCensusDivision dwe:census_division_east_north_central.
+dwe:usstate_illinois
+        dwo:partOfCensusDivision dwe:census_division_east_north_central.
+dwe:usstate_indiana
+        dwo:partOfCensusDivision dwe:census_division_east_north_central.
+dwe:usstate_michigan
+        dwo:partOfCensusDivision dwe:census_division_east_north_central.
+dwe:usstate_wisconsin
+        dwo:partOfCensusDivision dwe:census_division_east_north_central.
+
+dwe:usstate_missouri
+        dwo:partOfCensusDivision dwe:census_division_west_north_central.
+dwe:usstate_minnesota
+        dwo:partOfCensusDivision dwe:census_division_west_north_central.
+dwe:usstate_north_dakota
+        dwo:partOfCensusDivision dwe:census_division_west_north_central.
+dwe:usstate_south_dakota
+        dwo:partOfCensusDivision dwe:census_division_west_north_central.
+dwe:usstate_iowa
+        dwo:partOfCensusDivision dwe:census_division_west_north_central.
+dwe:usstate_nebraska
+        dwo:partOfCensusDivision dwe:census_division_west_north_central.
+dwe:usstate_kansas
+        dwo:partOfCensusDivision dwe:census_division_west_north_central.
+
+dwe:usstate_montana
+        dwo:partOfCensusDivision dwe:census_division_mountain.
+dwe:usstate_idaho
+        dwo:partOfCensusDivision dwe:census_division_mountain.
+dwe:usstate_colorado
+        dwo:partOfCensusDivision dwe:census_division_mountain.
+dwe:usstate_wyoming
+        dwo:partOfCensusDivision dwe:census_division_mountain.
+dwe:usstate_utah
+        dwo:partOfCensusDivision dwe:census_division_mountain.
+dwe:usstate_new_mexico
+        dwo:partOfCensusDivision dwe:census_division_mountain.
+dwe:usstate_arizona
+        dwo:partOfCensusDivision dwe:census_division_mountain.
+dwe:usstate_nevada
+        dwo:partOfCensusDivision dwe:census_division_mountain.
+
+dwe:usstate_california
+        dwo:partOfCensusDivision dwe:census_division_pacific.
+dwe:usstate_oregon
+        dwo:partOfCensusDivision dwe:census_division_pacific.
+dwe:usstate_washington
+        dwo:partOfCensusDivision dwe:census_division_pacific.
+dwe:usstate_alaska
+        dwo:partOfCensusDivision dwe:census_division_pacific.
+dwe:usstate_hawaii
+        dwo:partOfCensusDivision dwe:census_division_pacific.
+
+dwe:usstate_delaware
+        dwo:partOfCensusDivision dwe:census_division_south_atlantic.
+dwe:usstate_maryland
+        dwo:partOfCensusDivision dwe:census_division_south_atlantic.
+dwe:usstate_virginia
+        dwo:partOfCensusDivision dwe:census_division_south_atlantic.
+dwe:usstate_west_virginia
+        dwo:partOfCensusDivision dwe:census_division_south_atlantic.
+dwe:usstate_north_carolina
+        dwo:partOfCensusDivision dwe:census_division_south_atlantic.
+dwe:usstate_south_carolina
+        dwo:partOfCensusDivision dwe:census_division_south_atlantic.
+dwe:usstate_georgia
+        dwo:partOfCensusDivision dwe:census_division_south_atlantic.
+dwe:usstate_florida
+        dwo:partOfCensusDivision dwe:census_division_south_atlantic.
+dwe:usdistrict_washington_dc
+        dwo:partOfCensusDivision dwe:census_division_south_atlantic.
+
+dwe:usstate_kentucky
+        dwo:partOfCensusDivision dwe:census_division_east_south_central.
+dwe:usstate_tennessee
+        dwo:partOfCensusDivision dwe:census_division_east_south_central.
+dwe:usstate_alabama
+        dwo:partOfCensusDivision dwe:census_division_east_south_central.
+dwe:usstate_mississippi
+        dwo:partOfCensusDivision dwe:census_division_east_south_central.
+
+dwe:usstate_arkansas
+        dwo:partOfCensusDivision dwe:census_division_west_south_central.
+dwe:usstate_louisiana
+        dwo:partOfCensusDivision dwe:census_division_west_south_central.
+dwe:usstate_texas
+        dwo:partOfCensusDivision dwe:census_division_west_south_central.
+dwe:usstate_oklahoma
+        dwo:partOfCensusDivision dwe:census_division_west_south_central.
+
+

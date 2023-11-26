@@ -1,0 +1,65 @@
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix fn:    <http://www.w3.org/2005/xpath-functions#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix dwo:   <https://ontology.data.world/v0#> .
+@prefix label: <http://purl.org/net/vocab/2004/03/label#> .
+
+dwo:UsAdministrativeDivision
+        a                owl:Class ;
+        rdfs:isDefinedBy dwo: ;
+        rdfs:label       "US State (or Territory)" ;
+        label:plural     "US States (including Territories)" ;
+        dc:description   "A constituent political entity of the United States." ;
+        foaf:depiction   <https://ontology-assets.data.world/icons/icon-geo.svg>;
+        dwo:mayBePartOf  dwo:Census_Division  .
+
+dwo:UsState
+        a                owl:Class ;
+        rdfs:isDefinedBy dwo: ;
+        rdfs:label       "US State" ;
+        label:plural     "US States" ;
+        dc:description   "A constituent political entity of the United States. (excluding territories)" ;
+        rdfs:subClassOf dwo:UsAdministrativeDivision ;
+        dwo:mayBePartOf  dwo:Census_Division  .
+
+dwo:UsTerritory
+        a                owl:Class ;
+        rdfs:isDefinedBy dwo: ;
+        rdfs:label       "US Territory" ;
+        label:plural     "US Territories" ;
+        dc:description   "A Territory of the United States." ;
+        rdfs:subClassOf dwo:UsAdministrativeDivision ;
+        dwo:mayBePartOf  dwo:Census_Division  .
+
+dwo:UsDistrict
+        a                owl:Class ;
+        rdfs:isDefinedBy dwo: ;
+        rdfs:label       "US District" ;
+        label:plural     "US Districts" ;
+        dc:description   "A District of the United States." ;
+        rdfs:subClassOf dwo:UsAdministrativeDivision ;
+        dwo:mayBePartOf  dwo:Census_Division  .
+
+dwo:Code_UsAdministrativeDivisionAbbreviation
+        a                dwo:CodeSet ;
+        rdfs:isDefinedBy dwo: ;
+        dwo:denotation  dwo:UsAdministrativeDivision;
+        rdfs:label       "US State or Territory Abbreviation" ;
+        label:plural     "US State and Territory Abbreviations";
+        dwo:denotedByPredicate dwo:fipsAbbreviation .
+
+dwo:Code_UsAdministrativeDivisionFipsCode
+        a                dwo:CodeSet ;
+        rdfs:isDefinedBy dwo: ;
+        dwo:denotation  dwo:UsAdministrativeDivision;
+        rdfs:label       "US State or Territory FIPS Code" ;
+        label:plural     "US State and Territory FIPS Codes" ;
+        dwo:propertyNamePattern "(fips|state)";
+        dwo:denotedByPredicate dwo:fipsCode .
+
+dwo:partOfUsState rdfs:subPropertyOf dwo:partOf.
+

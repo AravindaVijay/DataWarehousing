@@ -1,0 +1,45 @@
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix fn:    <http://www.w3.org/2005/xpath-functions#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix dwo:   <https://ontology.data.world/v0#> .
+@prefix label: <http://purl.org/net/vocab/2004/03/label#> .
+
+
+dwo:MexicanAdministrativeDivision
+        a                owl:Class ;
+        rdfs:label       "Mexican State (incl. Mexico City)" ;
+        label:plural     "Mexican States (incl. Mexico City)" ;
+        dc:description   "A constituent political entity of Mexico. Includes Mexico City (DF/CMX)" ;
+        foaf:depiction   <https://ontology-assets.data.world/icons/icon-geo.svg>;
+        rdfs:isDefinedBy dwo: ;
+        dwo:mayBePartOf  dwo:Country  .
+
+dwo:MexicanState
+        a                owl:Class ;
+        rdfs:label       "Mexican State" ;
+        label:plural     "Mexican States" ;
+        dc:description   "A constituent political entity of Mexico." ;
+        rdfs:isDefinedBy dwo: ;
+        dwo:mayBePartOf  dwo:Country ;
+        rdfs:subClassOf dwo:MexicanAdministrativeDivision .
+
+dwo:MexicanDistrict
+        a                owl:Class ;
+        rdfs:label       "Mexican District" ;
+        label:plural     "Mexican Districts" ;
+        dc:description   "A constituent political entity of Mexico." ;
+        rdfs:isDefinedBy dwo: ;
+        dwo:mayBePartOf  dwo:Country ;
+        rdfs:subClassOf dwo:MexicanAdministrativeDivision .
+
+dwo:Code_MexicanAdministrativeDivision_Abbreviation
+        a                dwo:CodeSet ;
+        dwo:denotation  dwo:MexicanAdministrativeDivision;
+        rdfs:label       "Mexican Administrative Division Abbreviation" ;
+        label:plural     "Mexican Administrative Division Abbreviations" ;
+        rdfs:isDefinedBy dwo:  .
+

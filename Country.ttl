@@ -1,0 +1,45 @@
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix fn:    <http://www.w3.org/2005/xpath-functions#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix dwo:   <https://ontology.data.world/v0#> .
+@prefix label: <http://purl.org/net/vocab/2004/03/label#> .
+
+dwo:Country
+        a                owl:Class ;
+        rdfs:label       "Country" ;
+        label:plural     "Countries" ;
+        dc:description   "A nation with its own government, occupying a particular territory." ;
+        foaf:depiction   <https://ontology-assets.data.world/icons/icon-geo.svg>;
+	    rdfs:isDefinedBy dwo: ;
+        dwo:mayBePartOf  dwo:Landmass  .
+
+dwo:Code_FipsCountry
+        a                dwo:CodeSet ;
+        dwo:denotation   dwo:Country;
+        rdfs:label       "FIPS Country Code" ;
+        label:plural     "FIPS Country Codes" ;
+	    rdfs:isDefinedBy dwo: ;
+	    dwo:denotedByPredicate dwo:fipsCode .
+
+dwo:Code_Iso3Country
+        a                dwo:CodeSet ;
+        dwo:denotation  dwo:Country;
+        rdfs:label       "ISO 3 Country Code" ;
+        label:plural     "ISO 3 Country Codes" ;
+	    rdfs:isDefinedBy dwo: ;
+	    dwo:denotedByPredicate dwo:iso_3166_3 .
+
+dwo:Code_Iso2Country
+        a                dwo:CodeSet ;
+        dwo:denotation  dwo:Country;
+        rdfs:label       "ISO 2 Country Code" ;
+        label:plural     "ISO 2 Country Codes" ;
+        rdfs:isDefinedBy dwo: ;
+        dwo:denotedByPredicate dwo:iso_3166_2 .
+
+dwo:partOfCountry rdfs:subPropertyOf dwo:partOf.
+

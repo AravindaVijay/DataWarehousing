@@ -1,0 +1,20 @@
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix fn:    <http://www.w3.org/2005/xpath-functions#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix label: <http://purl.org/net/vocab/2004/03/label#> .
+@prefix dwo:   <https://ontology.data.world/v0#> .
+
+dwo:Census_Division
+        a                owl:Class ;
+        rdfs:label       "Census Division" ;
+        label:plural     "Census Divisions" ;
+        foaf:depiction   <https://ontology-assets.data.world/icons/icon-geo.svg>;
+        dc:description   "Grouping of states and the District of Columbia that are subdivisions of the four census regions" ;
+	    rdfs:isDefinedBy dwo: ;
+        dwo:mayBePartOf  dwo:Census_Region  .
+
+dwo:partOfCensusDivision rdfs:subPropertyOf dwo:partOf.

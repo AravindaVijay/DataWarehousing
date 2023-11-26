@@ -1,0 +1,24 @@
+@prefix dwo:   <https://ontology.data.world/v0#> .
+@prefix dwe:   <https://entities.data.world/> .
+@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
+
+dwe:census_region_northeast
+        a       dwo:Census_Region ;
+        skos:prefLabel "Northeast"  ;
+        dwo:partOfCountry dwe:country_united_states_of_america .
+
+dwe:census_region_midwest
+        a       dwo:Census_Region ;
+        skos:prefLabel "Midwest"  ;
+        dwo:partOfCountry dwe:country_united_states_of_america .
+
+dwe:census_region_south
+        a       dwo:Census_Region ;
+        skos:prefLabel "South" ;
+        dwo:partOfCountry dwe:country_united_states_of_america .
+
+dwe:census_region_west
+        a       dwo:Census_Region ;
+        skos:prefLabel "West"  ;
+        dwo:partOfCountry dwe:country_united_states_of_america .
+

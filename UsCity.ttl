@@ -1,0 +1,30 @@
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix fn:    <http://www.w3.org/2005/xpath-functions#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix dwo:   <https://ontology.data.world/v0#> .
+@prefix label: <http://purl.org/net/vocab/2004/03/label#> .
+
+dwo:UsCity
+        a                owl:Class ;
+        rdfs:label       "U.S. City" ;
+        label:plural     "U.S. Cities" ;
+        dc:description   "Incorporated municipal centers within the United States." ;
+        foaf:depiction   <https://ontology-assets.data.world/icons/icon-geo.svg>;
+        rdfs:isDefinedBy dwo: ;
+        dwo:mayBePartOf  dwo:UsAdministrativeDivision .
+
+
+dwo:Code_UsCityShortName
+        a                dwo:CodeSet ;
+        dwo:denotation   dwo:UsCity;
+        rdfs:label       "City Short Name" ;
+        label:plural     "City Short Names" ;
+        dwo:requiresContext     dwo:UsAdministrativeDivision ;
+        rdfs:isDefinedBy dwo: .
+
+dwo:partOfState rdfs:subPropertyOf dwo:partOf.
+

@@ -1,0 +1,139 @@
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix dwo: <https://ontology.data.world/v0#> .
+@prefix dwe: <https://entities.data.world/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix label: <http://purl.org/net/vocab/2004/03/label#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix label: <http://purl.org/net/vocab/2004/03/label#> .
+
+
+
+dwo:MedicalDiagnosis a owl:Class ;
+  rdfs:isDefinedBy    dwo: ;
+  rdfs:subClassOf     skos:Concept ;
+  rdfs:comment        "A diagnosis of a medical condition" ;  
+  rdfs:label         "Diagnosis";
+  label:plural        "Diagnoses" ;
+  dc:description      "Type of diagnosis";
+.
+
+dwo:ICD10Code a owl:Class ;
+  rdfs:isDefinedBy    dwo: ;
+  rdfs:subClassOf     skos:Concept ;
+  rdfs:comment        "A concept referenced in the ICD-10 codebook" ;
+  rdfs:label         "ICD10 Code"; 
+  label:plural        "ICD10 Codes" ;
+  dc:description      "The 10th revision of the International Statistical Classification of Diseases and Related Health Problems";
+.
+
+dwo:ICD10Category a owl:Class ;
+  rdfs:isDefinedBy    dwo: ;
+  rdfs:subClassOf     skos:Concept ;
+#  rdfs:comment       "A category from the ICD-10 CCS" ;
+  dc:description      "A category from the ICD-10 CCS" ;
+  rdfs:label          "ICD10 Category"  ; 
+  label:plural        "ICD10 Categories" ;
+.
+
+dwo:ICD10CM a owl:Class ;
+  rdfs:isDefinedBy    dwo: ;
+  rdfs:subClassOf     dwo:MedicalDiagnosis, dwo:ICD10Code ;
+  rdfs:label          "ICD10 CM" ;
+  label:plural        "ICD10 CM" ;
+  dc:description      "Unique illnesses uniquely identified by a 3 to 7 digit code" ;
+  dwo:mayBePartOf     dwo:ICD10CMCategory ;
+  foaf:depiction   <https://ontology-assets.data.world/icons/icon-medical.svg>;
+.
+
+dwo:Code_ICD10CM a dwo:CodeSet ;
+  rdfs:isDefinedBy    dwo: ;
+  dwo:denotation      dwo:ICD10CM ;
+  rdfs:label          "ICD10 CM Code" ;
+  label:plural        "ICD10 CM Codes" ;
+  dwo:denotedByPredicate skos:notation ;
+.  
+
+dwo:ICD10CMCategory a owl:Class ;
+  rdfs:isDefinedBy    dwo: ;
+  rdfs:subClassOf     dwo:ICD10Category ;
+  rdfs:label          "ICD10 CM Category" ;
+  label:plural        "ICD10 CM Categories" ;
+  dc:description      "A set of clinically meaningful categories into which ICD-10 diagnoses are grouped" ;
+  foaf:depiction   <https://ontology-assets.data.world/icons/icon-medical.svg>;
+.
+
+dwo:Code_ICD10CMCategory a dwo:CodeSet ;
+  rdfs:isDefinedBy    dwo: ;
+  dwo:denotation      dwo:ICD10CMCategory ;
+  rdfs:label          "ICD10 CM Category Code" ;
+  label:plural        "ICD10 CM Category Codes" ;
+  dwo:denotedByPredicate skos:notation ;
+  dwo:propertyNamePattern "(icd|pcs|cat|medical)";
+.  
+
+dwo:ConceptScheme-ICD10 a skos:ConceptScheme ;
+  rdfs:isDefinedBy    dwo: ;
+  skos:prefLabel      "ICD10 Diagnosis and Procedure Codes" ; 
+.
+
+dwo:Concept-ICD10CM a skos:Concept ;
+  rdfs:isDefinedBy    dwo: ;
+  skos:topConceptOf   dwo:ConceptScheme-ICD10 ;
+  skos:prefLabel      "ICD10 CM Codes" ;
+.
+
+dwo:MedicalProcedure a owl:Class ;
+  rdfs:isDefinedBy    dwo: ;
+  rdfs:subClassOf     skos:Concept ;
+  rdfs:comment        "Name of procedure from the 10th revision Procedure Coding System" ;
+  rdfs:label          "Procedure";
+  label:plural        "Procedures" ;
+  dc:description      "Type of Procedure";
+
+.
+
+dwo:ICD10PCS a owl:Class ;
+  rdfs:isDefinedBy    dwo: ;
+  rdfs:subClassOf     dwo:MedicalProcedure, dwo:ICD10Code ;
+  rdfs:label          "ICD10 PCS" ;
+  label:plural        "ICD10 PCS" ;
+  dc:description      "7 digit code that uniquely identifies a diagnostic procedure" ;
+  dwo:mayBePartOf     dwo:ICD10PCSCategory ;
+  foaf:depiction   <https://ontology-assets.data.world/icons/icon-medical.svg>;
+.
+
+dwo:Code_ICD10PCS a dwo:CodeSet ;
+  rdfs:isDefinedBy    dwo: ;
+  dwo:denotation      dwo:ICD10PCS ;
+  rdfs:label          "ICD10 PCS Code" ;
+  label:plural        "ICD10 PCS Codes" ;
+  dwo:denotedByPredicate skos:notation ;
+.  
+
+dwo:ICD10PCSCategory a owl:Class ;
+  rdfs:isDefinedBy    dwo: ;
+  rdfs:subClassOf     dwo:ICD10Category ;
+  rdfs:label          "ICD10 PCS Category" ;
+  label:plural        "ICD10 PCS Categories" ;
+  dc:description      "A set of clinically meaningful categories into which ICD-10 procedures are grouped" ;
+  foaf:depiction   <https://ontology-assets.data.world/icons/icon-medical.svg>;
+.
+
+dwo:Code_ICD10PCSCategory a dwo:CodeSet ;
+  rdfs:isDefinedBy    dwo: ;
+  dwo:denotation      dwo:ICD10PCSCategory ;
+  rdfs:label          "ICD10 PCS Category Code" ;
+  label:plural        "ICD10 PCS Category Codes" ;
+  dwo:denotedByPredicate skos:notation ;
+  dwo:propertyNamePattern "(icd|pcs|cat|medical)";
+.   
+
+dwo:Concept-ICD10PCS a skos:Concept ;
+  rdfs:isDefinedBy    dwo: ;
+  skos:topConceptOf   dwo:ConceptScheme-ICD10 ;
+  skos:prefLabel      "ICD10 PCS Codes" ;
+.

@@ -1,0 +1,39 @@
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix label: <http://purl.org/net/vocab/2004/03/label#> .
+@prefix dwo:   <https://ontology.data.world/v0#> .
+@prefix geo:   <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+dwo:ZipCode
+        a                owl:Class ;
+        rdfs:label       "Zip Code" ;
+        label:plural     "Zip Codes" ;
+        foaf:depiction   <https://ontology-assets.data.world/icons/icon-geo.svg>;
+        dc:description   "A system of postal codes used by the United States Postal Service since 1963." ;
+        rdfs:isDefinedBy dwo: ;
+        dwo:mayBePartOf  dwo:UsAdministrativeDivision  .
+
+geo:lat dwo:featuredPredicateOf dwo:ZipCode;
+    rdfs:range xsd:decimal;
+    dc:description "Latitude for the centroid of the zip code";
+    rdfs:label "latitude".
+
+geo:long dwo:featuredPredicateOf dwo:ZipCode;
+    rdfs:range xsd:decimal;
+    dc:description "Longitude for the centroid of the zip code";
+    rdfs:label "longitude".
+
+dwo:Code_Zipcode
+        a                dwo:CodeSet ;
+        dwo:denotation   dwo:ZipCode;
+        rdfs:label       "Zip Code" ;
+        label:plural     "Zip Codes" ;
+        dwo:denotedByPredicate skos:notation ;
+        dwo:reshapeRule  [dwo:regex "^[0-9]{3}$"; dwo:regex_replace "00$0"],
+                        [dwo:regex "^[0-9]{4}$"; dwo:regex_replace "0$0"],
+                        [dwo:regex "^([0-9]{5})-[0-9]{4}$"; dwo:regex_replace "$1"];
+        rdfs:isDefinedBy dwo: .

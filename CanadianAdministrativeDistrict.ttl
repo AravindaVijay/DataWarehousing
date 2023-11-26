@@ -1,0 +1,46 @@
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix dwo:   <https://ontology.data.world/v0#> .
+@prefix fn:    <http://www.w3.org/2005/xpath-functions#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix label: <http://purl.org/net/vocab/2004/03/label#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+
+dwo:CanadianAdministrativeDivision
+        a                owl:Class ;
+        rdfs:isDefinedBy dwo: ;
+        rdfs:label       "Canadian Province (or Territory)" ;
+        label:plural     "Canadian Provinces (including Territories)" ;
+        dc:description   "A constituent political entity of Canada. (Administrative Districts including Provinces & Territories)" ;
+        foaf:depiction   <https://ontology-assets.data.world/icons/icon-geo.svg> ;
+        dwo:mayBePartOf  dwo:Country  .
+
+dwo:CanadianProvince
+        a                owl:Class ;
+        rdfs:isDefinedBy dwo: ;
+        rdfs:label       "Canadian Province" ;
+        label:plural     "Canadian Provinces (excluding Territories)" ;
+        dc:description   "A constituent political entity of Canada. (excluding Territories)" ;
+        foaf:depiction   <https://ontology-assets.data.world/icons/icon-geo.svg>;
+        rdfs:subClassOf  dwo:CanadianAdministrativeDivision ;
+        dwo:mayBePartOf  dwo:Country  .
+
+dwo:CanadianTerritory
+        a                owl:Class ;
+        rdfs:isDefinedBy dwo: ;
+        rdfs:label       "Canadian Territory" ;
+        label:plural     "Canadian Territories (excluding Provinces)" ;
+        dc:description   "A constituent political entity of Canada. (excluding Provinces)" ;
+        foaf:depiction   <https://ontology-assets.data.world/icons/icon-geo.svg>;
+        rdfs:subClassOf  dwo:CanadianAdministrativeDivision ;
+        dwo:mayBePartOf  dwo:Country  .
+
+dwo:Code_CanadianAdministrativeDivision_Abbreviation
+        a                dwo:CodeSet ;
+        dwo:denotation  dwo:CanadianAdministrativeDivision ;
+        rdfs:label       "Canadian Province Abbreviation (ISO-3166-2)" ;
+        label:plural     "Canadian Province Abbreviations (ISO-3166-2)" ;
+        dc:description   "Two letter abbreviation for Canadian Provinces and Territories (ISO-3166-2)";
+        rdfs:isDefinedBy dwo: .

@@ -1,0 +1,213 @@
+PREFIX oc: <https://data.world/ontology-checker#>
+PREFIX dwo: <https://ontology.data.world/v0#>
+PREFIX sh: <http://www.w3.org/ns/shacl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX label: <http://purl.org/net/vocab/2004/03/label#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX owl:   <http://www.w3.org/2002/07/owl#>
+PREFIX dc:   <http://purl.org/dc/elements/1.1/>
+PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#>
+
+
+[   a sh:NodeShape ;
+	sh:target oc:EntityClassTarget;
+    sh:name "Entity class label" ;
+    sh:description "Entity classes need a label" ;
+	sh:property [
+                    sh:path rdfs:label ;
+      	            sh:severity sh:Violation;
+                    sh:minCount 1;
+                    sh:maxCount 1;
+    		    ]
+].
+
+[   a sh:NodeShape ;
+	sh:target oc:EntityClassTarget;
+    sh:name "Entity class plural label" ;
+    sh:description "Entity classes need a plural label" ;
+	sh:property [
+                    sh:path label:plural ;
+      	            sh:severity sh:Violation;
+                    sh:minCount 1;
+                    sh:maxCount 1;
+    		    ]
+].
+
+[   a sh:NodeShape ;
+	sh:target oc:EntityClassTarget;
+    sh:name "Entity class description" ;
+    sh:description "Entity classes need a description" ;
+	sh:property [
+                    sh:path dc:description ;
+      	            sh:severity sh:Violation;
+                    sh:minCount 1;
+                    sh:maxCount 1;
+    		    ]
+].
+
+[   a sh:NodeShape ;
+	sh:target oc:EntityClassTarget;
+    sh:name "Entity class depiction" ;
+    sh:description "Entity classes should have a depiction" ;
+	sh:property [
+                    sh:path foaf:depiction ;
+      	            sh:severity sh:Warning;
+                    sh:minCount 1;
+                    sh:maxCount 1;
+    		    ]
+].
+
+
+[   a sh:NodeShape ;
+	sh:target oc:EntityTarget;
+    sh:name "Entity label" ;
+    sh:description "Entities need a label" ;
+	sh:property [
+                    sh:path skos:prefLabel ;
+      	            sh:severity sh:Violation;
+                    sh:minCount 1;
+                    sh:maxCount 1;
+    		    ]
+].
+
+[   a sh:NodeShape ;
+	sh:targetClass dwo:CodeSet;
+    sh:name "Codeset label" ;
+    sh:description "Codesets need a exactly one label" ;
+	sh:property [
+                    sh:path rdfs:label ;
+      	            sh:severity sh:Violation;
+                    sh:minCount 1;
+                    sh:maxCount 1;
+    		    ]
+].
+
+
+[	a sh:NodeShape ;
+	sh:targetClass dwo:CodeSet;
+    sh:name "Codeset plural label" ;
+    sh:description "Codesets need a plural label" ;
+	sh:property [
+                    sh:path label:plural ;
+      	            sh:severity sh:Violation;
+                    sh:minCount 1;
+                    sh:maxCount 1;
+    		    ]].
+
+[	a sh:NodeShape ;
+	sh:targetClass dwo:CodeSet;
+    sh:name "Codeset description" ;
+    sh:description "Codesets should have a denotation" ;
+    sh:property [
+                    sh:path  dwo:denotation ;
+                    sh:class owl:Class ;
+     	            sh:severity sh:Violation;
+                    sh:minCount 1;
+                    sh:maxCount 1;
+    		    ]].
+
+
+[	a sh:NodeShape ;
+	sh:targetClass dwo:Code;
+    sh:name "Code notation" ;
+    sh:description "Codes require a notation" ;
+    sh:property [
+                    sh:path  skos:notation ;
+     	            sh:severity sh:Violation;
+                    sh:minCount 1;
+                    sh:maxCount 1;
+    		    ]].
+
+[	a sh:NodeShape ;
+	sh:targetClass dwo:Code;
+    sh:name "Code inCodeSet" ;
+    sh:description "Codes should be defined in CodeSets" ;
+    sh:property [
+                    sh:path  dwo:inCodeSet ;
+                    sh:class dwo:CodeSet ;
+     	            sh:severity sh:Violation;
+                    sh:minCount 1;
+                    sh:maxCount 1;
+    		    ]].
+
+
+[	a sh:NodeShape ;
+	sh:targetClass dwo:Code;
+    sh:name "Code denotes" ;
+    sh:description "Codes should denote something, possibly with context" ;
+    sh:or (
+           [
+                    sh:path  dwo:denotes ;
+                    sh:minCount 1;
+                    sh:maxCount 1;
+    	   ]
+           [
+                    sh:path  dwo:denotesWithContext ;
+                    sh:minCount 1;
+    	   ]
+    	 )].
+
+[	a sh:NodeShape ;
+	sh:targetClass dwo:Code;
+    sh:name "Codes inCodeSet-denotedByPredicate" ;
+    sh:description "Codes can't be in CodeSets denoted by predicates" ;
+    sh:not
+           [
+                 a sh:PropertyShape ;
+                 sh:path  (dwo:inCodeSet dwo:denotedByPredicate) ;
+                 sh:minCount 1 ;
+    	   ]
+    ].
+
+[	a sh:NodeShape ;
+	sh:targetSubjectsOf dwo:denotesWithContext;
+    sh:name "Codes denotesWithContext-requiresContext" ;
+    sh:description "Codes that denotes by context must be in CodeSets that require context" ;
+    sh:property
+           [
+                 sh:path  (dwo:inCodeSet dwo:requiresContext) ;
+                 sh:minCount 1 ;
+    	   ]
+    ].
+
+oc:
+    sh:declare [
+            sh:prefix "rdfs" ;
+            sh:namespace "http://www.w3.org/2000/01/rdf-schema#"^^xsd:anyURI ;
+    ] ;
+    sh:declare [
+        sh:prefix "dwo" ;
+        sh:namespace "https://ontology.data.world/v0#"^^xsd:anyURI ;
+    ] ;
+    sh:declare [
+        sh:prefix "owl" ;
+        sh:namespace "http://www.w3.org/2002/07/owl#"^^xsd:anyURI ;
+    ] .
+
+
+oc:EntityClassTarget
+    a sh:SPARQLTarget ;
+    sh:prefixes oc: ;
+    sh:select """
+        SELECT ?this
+        WHERE {
+            ?this a owl:Class .
+            ?this rdfs:isDefinedBy ?ont .
+            ?ont a dwo:Ontology.
+        }
+        """.
+
+oc:EntityTarget
+    a sh:SPARQLTarget ;
+    sh:prefixes oc: ;
+    sh:select """
+        SELECT ?this
+        WHERE {
+            ?this a ?cls .
+            ?cls a owl:Class .
+            ?cls rdfs:isDefinedBy ?ont .
+            ?ont a dwo:Ontology.
+        }
+        """.

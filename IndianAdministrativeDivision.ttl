@@ -1,0 +1,53 @@
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix fn:    <http://www.w3.org/2005/xpath-functions#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix dwo:   <https://ontology.data.world/v0#> .
+@prefix label: <http://purl.org/net/vocab/2004/03/label#> .
+
+dwo:IndianAdministrativeDivision
+    a                   owl:Class ;
+    rdfs:label          "Indian State (or Union Territory)" ;
+    label:plural        "Indian States (incl. Union Territories)" ;
+    foaf:depiction      <https://ontology-assets.data.world/icons/icon-geo.svg> ;
+    rdfs:isDefinedBy    dwo: ;
+    dc:description      "An Constituent Political Entity of India." ;
+    dwo:mayBePartOf     dwo:Country .
+
+dwo:IndianState
+    a                   owl:Class ;
+    rdfs:label          "Indian State" ;
+    label:plural        "Indian States" ;
+    rdfs:isDefinedBy    dwo: ;
+    dc:description      "A constituent state of India" ;
+    dwo:mayBePartOf     dwo:Country ;
+    rdfs:subClassOf     dwo:IndianAdministrativeDivision .
+
+dwo:IndianUnion_Territory
+    a                   owl:Class ;
+    rdfs:label          "Indian Union Territory" ;
+    label:plural        "Indian Union Territories" ;
+    rdfs:isDefinedBy    dwo: ;
+    dc:description      "A Union Territory of India" ;
+    dwo:mayBePartOf     dwo:Country ;
+    rdfs:subClassOf     dwo:IndianAdministrativeDivision .
+
+dwo:IndianNational_Capital_Territory
+    a                   owl:Class ;
+    rdfs:label          "Indian National Capital Territory" ;
+    label:plural        "Indian National Capital Territories" ;
+    rdfs:isDefinedBy    dwo: ;
+    dc:description      "A National Capital Territory of India" ;
+    dwo:mayBePartOf     dwo:Country ;
+    rdfs:subClassOf     dwo:IndianUnion_Territory .
+
+dwo:Code_IndianAdministrativeDivision_Abbreviation
+    a                   dwo:CodeSet ;
+    dwo:denotation      dwo:IndianAdministrativeDivision ;
+    rdfs:label          "Indian State (or Territory) Abbreviation" ;
+    label:plural        "Indian State (or Territory) Abbreviations" ;
+    rdfs:isDefinedBy    dwo: ;
+    dwo:denotedByPredicate dwo:iso_3166_2_IN .

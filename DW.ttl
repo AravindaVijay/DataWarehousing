@@ -1,0 +1,787 @@
+@prefix dwo:   <https://ontology.data.world/v0#>.
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix csvw:  <http://www.w3.org/ns/csvw#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix time:  <http://www.w3.org/2006/time#> .
+
+# This file includes everything we generate during ingest that is not part of the
+# CSVW (including applicable included Dublin Core), VoID, DAT, or Sparql Service Endpoint ontologies.
+
+#data issues
+dwo:Dataset a rdfs:Class ;
+	rdfs:comment "dwo:Dataset represents a dataset in data.world";
+	rdfs:isDefinedBy dwo: .
+
+dwo:agentId a owl:DatatypeProperty;
+	rdfs:domain dwo:Dataset;
+	rdfs:range xsd:string;
+	rdfs:comment "dwo:agentId represents the data.world id for the owner of a dataset";
+	rdfs:isDefinedBy dwo: .
+
+dwo:datasetId a owl:DatatypeProperty;
+	rdfs:domain dwo:Dataset;
+	rdfs:range xsd:string;
+	rdfs:comment "dwo:datasetId represents the data.world id for a dataset";
+	rdfs:isDefinedBy dwo: .
+
+
+#Table extensions
+
+dwo:name a owl:DatatypeProperty;
+    rdfs:domain [owl:unionOf (csvw:Table dwo:Sheet dwo:File dwo:Layer)];
+	rdfs:range xsd:string;
+	rdfs:isDefinedBy dwo: .
+
+dwo:definedInFile a owl:ObjectProperty;
+	rdfs:domain csvw:Table;
+	rdfs:range dwo:File;
+	rdfs:comment "dwo:definedInFile represents the File resource that a table was defined in, if any";
+	rdfs:isDefinedBy dwo: .
+
+dwo:definedInSheet a owl:ObjectProperty;
+	rdfs:domain csvw:Table;
+	rdfs:range dwo:Sheet;
+    rdfs:comment "dwo:definedInSheet represents the Sheet resource that a table was defined in";
+    rdfs:isDefinedBy dwo: .
+
+dwo:legacyAlias a owl:DatatypeProperty;
+	rdfs:domain [owl:unionOf (csvw:Table csvw:Column)];
+	rdfs:range xsd:string;
+	rdfs:comment """dwo:legacyAlias represents the name of a table as calculated by previous version of data.world.
+	                Kept to enable legacy queries using that name to continue working""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:extent a owl:ObjectProperty;
+	rdfs:domain [owl:union (csvw:TableGroup csvw:Table)];
+	rdfs:range dwo:Extent;
+    rdfs:comment """dwo:extent represents the object that a for a table or table group, containing the calculated geospactial
+                  and temporal extents for the table or group""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:firstRow a owl:ObjectProperty;
+	rdfs:domain csvw:Table;
+	rdfs:range csvw:Row;
+	rdfs:comment """dwo:firstRow represents a reference from a Table resource to the first Row in that table""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:lastRow a owl:ObjectProperty;
+	rdfs:domain csvw:Table;
+	rdfs:range csvw:Row;
+	rdfs:comment """dwo:lastRow represents a reference from a Table resource to the last Row in that table""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:nextRow a owl:ObjectProperty;
+	rdfs:domain csvw:Row;
+	rdfs:range csvw:Row;
+	rdfs:comment """dwo:nextRow represents a reference from a Row resource to the subsequent Row in that table""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:prevRow a owl:ObjectProperty;
+	rdfs:domain csvw:Row;
+	rdfs:range csvw:Row;
+	rdfs:comment """dwo:prevRow represents a reference from a Row resource to the preceding Row in that table""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:queryLang a owl:ObjectProperty;
+	rdfs:domain csvw:Table;
+	rdfs:range dwo:QueryLang;
+	rdfs:comment """For a Table resource defined by a view (rather than data files), dwo:queryLang represents
+	                  the language the view query was written in (e.g SQL or SPARQL)""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:queryText a owl:DatatypeProperty;
+	rdfs:domain csvw:Table;
+	rdfs:range xsd:string;
+    rdfs:comment """For a Table resource defined by a view (rather than data files), dwo:queryLang represents
+	                  the language the view query was written in (SQL or SPARQL)""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:tableIndex a owl:DatatypeProperty;
+	rdfs:domain csvw:Table;
+	rdfs:range xsd:integer;
+	rdfs:comment """For a Table resource defined in a multi-table file (e.g. Excel or Sqlite), dwo:tableIndex
+	                represents the index of the table within the file""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:rdfType a owl:ObjectProperty;
+	rdfs:domain csvw:Table;
+	rdfs:range xsd:anyURI;
+    rdfs:comment """dwo:rdfType represents any additional rdf types which should be defined for each row Resource belonging to a Table resource.
+                    For each Row instance of a Table, and additional rdf:type triple will be generated for each dwo:rdfType triple defined on the Table""";
+	rdfs:isDefinedBy dwo: .
+
+#Column extensions
+
+dwo:sourceColumnIndex a owl:DatatypeProperty;
+	rdfs:domain csvw:Column;
+	rdfs:range xsd:integer;
+	rdfs:isDefinedBy dwo: .
+
+dwo:active a owl:DatatypeProperty;
+	rdfs:domain csvw:Column;
+	rdfs:range xsd:boolean;
+    rdfs:comment """dwo:active indicates whether a column is expected to be shown in the standard view of a table and queriable via SQL
+                    Will be false if the user has dismissed a column from view (e.g. raw columns, or columns superceded by a linked column)""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:derivedFrom a owl:ObjectProperty;
+	rdfs:domain csvw:Column;
+	rdfs:range csvw:Column;
+    rdfs:comment """dwo:derivedFrom relates calculated columns to the columns they are calculated from""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:tally a owl:ObjectProperty;
+	rdfs:domain csvw:Column;
+	rdfs:range dwo:OccurrenceTally;
+    rdfs:comment """dwo:tally links a column containing discrete values to a structure giving a tally of the elements present in the column""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:histogram a owl:ObjectProperty;
+	rdfs:domain csvw:Column;
+	rdfs:range dwo:OccurrenceTally;
+    rdfs:comment """dwo:histogram links a column containing continuous values to a structure giving a tally of the elements present in the column""";
+	rdfs:isDefinedBy dwo: .
+
+#inherited column extensions
+
+dwo:valueCalculation a owl:DatatypeProperty;
+	rdfs:domain [owl:unionOf (csvw:Column csvw:Schema csvw:Table csvw:TableGroup)];
+	rdfs:range xsd:string;
+    rdfs:comment """dwo:valueCalculation represents a calculated column value, represented as a JEXL fragment""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:valueConstruct a owl:DatatypeProperty;
+	rdfs:domain [owl:unionOf (csvw:Column csvw:Schema csvw:Table csvw:TableGroup)];
+	rdfs:range xsd:string;
+    rdfs:comment """dwo:valueCalculation represents a calculated column value, represented as a SPARQL construct query""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:valueLiteral a owl:DatatypeProperty;
+	rdfs:domain [owl:unionOf (csvw:Column csvw:Schema csvw:Table csvw:TableGroup)];
+	rdfs:range xsd:string;
+    rdfs:comment """dwo:valueCalculation represents a constant scalar column value""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:valueLookup a owl:DatatypeProperty;
+	rdfs:domain [owl:unionOf (csvw:Column csvw:Schema csvw:Table csvw:TableGroup)];
+	rdfs:range xsd:string;
+    rdfs:comment """dwo:valueCalculation represents a calculated column value, represented as a codeset lookup fragment""";
+	rdfs:isDefinedBy dwo: .
+
+#Datatype extensions
+
+dwo:entityClass a owl:ObjectProperty;
+	rdfs:domain [owl:unionOf (csvw:Datatype  dwo:EntityRecommendation)];
+	rdfs:range rdfs:Class;
+    rdfs:comment """dwo:entityClass represents the class of entities represented by this URI column.  This is either an existing
+    column (for csvw:Datatype resources) or a proposed column (for dwo:EntityRecommendation resources.""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:codeSet a owl:ObjectProperty;
+	rdfs:domain [owl:unionOf (csvw:Datatype  dwo:EntityRecommendation)];
+	rdfs:range dwo:Codeset;
+    rdfs:comment """dwo:entityClass represents the codeset from which the column is derived.  This is either an existing
+                    column (for csvw:Datatype resources) or a proposed column (for dwo:EntityRecommendation resources.""";
+	rdfs:isDefinedBy dwo: .
+
+#adding File information to csvw
+
+dwo:File a rdfs:Class ;
+	rdfs:comment """An entity representing a file in a dataset.""";
+    rdfs:isDefinedBy dwo: .
+
+dwo:containsFile a owl:ObjectProperty;
+	rdfs:domain csvw:Dataset;
+	rdfs:range dwo:File;
+	rdfs:comment """Linking predicate from a dataset to contained files""";
+    rdfs:isDefinedBy dwo: .
+
+dwo:fileExtension a owl:DatatypeProperty;
+	rdfs:domain dwo:File;
+	rdfs:range xsd:string;
+	rdfs:comment """Convenience predicate for the extension of a file.  Handy for querying""";
+	rdfs:isDefinedBy dwo: .
+
+#adding Sheet information to csvw
+dwo:Sheet a rdfs:Class ;
+	rdfs:comment """An entity representing a sheet in a multi-sheet file.""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:containsSheet a owl:ObjectProperty;
+	rdfs:domain dwo:File;
+	rdfs:range dwo:Sheet;
+	rdfs:comment """Linking predicate from a file to contained sheets""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:sheetIndex a owl:DatatypeProperty;
+	rdfs:domain dwo:Sheet;
+	rdfs:range xsd:integer;
+    rdfs:comment """index of a sheet in a file""";
+    rdfs:isDefinedBy dwo: .
+
+#adding Layer information to csvw
+dwo:Layer a rdfs:Class ;
+	rdfs:isDefinedBy dwo: .
+
+dwo:layer a owl:ObjectProperty;
+	rdfs:domain [owl:union (csvw:Column csvw:TableGroup)];
+	rdfs:range xsd:Layer;
+	rdfs:isDefinedBy dwo: .
+
+#Extents
+
+dwo:temporalExtent a owl:ObjectProperty;
+	rdfs:domain dwo:Extent;
+	rdfs:range time:Interval;
+    rdfs:comment """The time range for an Extent resource""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:east a owl:DatatypeProperty;
+	rdfs:domain dwo:Extent;
+	rdfs:range xsd:decimal;
+    rdfs:comment """The easternmost point for an Extent resource""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:west a owl:DatatypeProperty;
+	rdfs:domain dwo:Extent;
+	rdfs:range xsd:decimal;
+    rdfs:comment """The westernmost point for an Extent resource""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:north a owl:DatatypeProperty;
+	rdfs:domain dwo:Extent;
+	rdfs:range xsd:decimal;
+    rdfs:comment """The northernmost point for an Extent resource""";
+	rdfs:isDefinedBy dwo: .
+
+dwo:south a owl:DatatypeProperty;
+	rdfs:domain dwo:Extent;
+	rdfs:range xsd:decimal;
+    rdfs:comment """The southernmost point for an Extent resource""";
+	rdfs:isDefinedBy dwo: .
+
+#entity recommendations
+
+dwo:EntityRecommendation a rdfs:Class ;
+	rdfs:comment "dwo:EntityRecommendation represents a recommendation that the values in a column appear to represent known entities, possibly via a codeset";
+	rdfs:isDefinedBy dwo: .
+
+dwo:recommendationFile a owl:ObjectProperty;
+	rdfs:domain dwo:EntityRecommendation;
+	rdfs:range dwo:File;
+	rdfs:comment "dwo:recommendationFile represents the file the recommendation pertains to";
+	rdfs:isDefinedBy dwo: .
+
+dwo:recommendationTable a owl:ObjectProperty;
+	rdfs:domain dwo:EntityRecommendation;
+	rdfs:comment "dwo:recommendationTable represents the table the recommendation pertains to";
+	rdfs:range csvw:Table;
+	rdfs:isDefinedBy dwo: .
+
+dwo:recommendationColumn a owl:ObjectProperty;
+	rdfs:domain dwo:EntityRecommendation;
+	rdfs:range csvw:ColumnDescription;
+	rdfs:comment "dwo:recommendationColumn represents the column the recommendation pertains to";
+	rdfs:isDefinedBy dwo: .
+
+
+dwo:recommendationAccuracy a owl:DatatypeProperty;
+	rdfs:domain dwo:EntityRecommendation;
+	rdfs:range xsd:decimal;
+	rdfs:isDefinedBy dwo: .
+
+dwo:recommendationCoverage a owl:DatatypeProperty;
+	rdfs:domain dwo:EntityRecommendation;
+	rdfs:range xsd:decimal;
+	rdfs:isDefinedBy dwo: .
+
+#data issues
+dwo:DataIssue a rdfs:Class ;
+	rdfs:isDefinedBy dwo: .
+
+dwo:issueType a owl:ObjectProperty;
+	rdfs:domain dwo:DataIssue;
+	rdfs:range dwo:DataIssueType;
+	rdfs:comment "dwo:issueLevel represents issue level for the data issue being reported";
+	rdfs:isDefinedBy dwo: .
+
+dwo:issueLevel a owl:ObjectProperty;
+	rdfs:domain dwo:DataIssue;
+	rdfs:range dwo:IssueLevel;
+	rdfs:comment "dwo:issueLevel represents issue level for the data issue being reported";
+	rdfs:isDefinedBy dwo: .
+
+dwo:issueDataset a owl:ObjectProperty;
+	rdfs:domain dwo:DataIssue;
+	rdfs:range dwo:Dataset;
+	rdfs:comment "dwo:issueDataset represents the dataset containing the data issue being reported";
+	rdfs:isDefinedBy dwo: .
+
+dwo:issueFile a owl:ObjectProperty;
+	rdfs:domain dwo:DataIssue;
+	rdfs:range dwo:File;
+	rdfs:comment "dwo:issueFile represents the file containing the data issue being reported";
+	rdfs:isDefinedBy dwo: .
+
+dwo:issueTable a owl:ObjectProperty;
+	rdfs:domain dwo:DataIssue;
+	rdfs:comment "dwo:issueTable represents the table containing the data issue being reported";
+	rdfs:range csvw:Table;
+	rdfs:isDefinedBy dwo: .
+
+dwo:issueColumn a owl:ObjectProperty;
+	rdfs:domain dwo:DataIssue;
+	rdfs:range csvw:ColumnDescription;
+	rdfs:comment "dwo:issueColumn represents the column containing the data issue being reported";
+	rdfs:isDefinedBy dwo: .
+
+dwo:issueColumnIndex a owl:DatatypeProperty;
+	rdfs:domain dwo:DataIssue;
+	rdfs:range xsd:integer;
+	rdfs:isDefinedBy dwo: .
+
+dwo:issueRow a owl:ObjectProperty;
+	rdfs:domain dwo:DataIssue;
+	rdfs:range xsd:anyURI;
+	rdfs:comment "dwo:issueRow represents the row containing the data issue being reported";
+	rdfs:isDefinedBy dwo: .
+
+dwo:issueMessage a owl:DatatypeProperty;
+	rdfs:domain dwo:DataIssue;
+	rdfs:range xsd:integer;
+	rdfs:comment "dwo:issueMessage represents a descriptive message about the data issue being reported";
+	rdfs:isDefinedBy dwo: .
+
+dwo:issuePayload1 a owl:DatatypeProperty;
+    rdfs:domain dwo:DataIssue;
+    rdfs:range xsd:string;
+    rdfs:isDefinedBy dwo: .
+
+dwo:issuePayload2 a owl:DatatypeProperty;
+    rdfs:domain dwo:DataIssue;
+    rdfs:range xsd:string;
+    rdfs:isDefinedBy dwo: .
+
+dwo:issuePayload3 a owl:DatatypeProperty;
+    rdfs:domain dwo:DataIssue;
+    rdfs:range xsd:string;
+    rdfs:isDefinedBy dwo: .
+
+
+#Table statistics
+dwo:rowCount a owl:DatatypeProperty;
+	rdfs:domain csvw:Table;
+	rdfs:range xsd:integer;
+	rdfs:comment "dwo:rowCount represents the number of rows in a table resource";
+	rdfs:isDefinedBy dwo: .
+
+dwo:columnCount a owl:DatatypeProperty;
+	rdfs:domain csvw:Table;
+	rdfs:range xsd:integer;
+	rdfs:comment "dwo:rowCount represents the number of columns shown for a table resource";
+	rdfs:isDefinedBy dwo: .
+
+dwo:errorCount a owl:DatatypeProperty;
+	rdfs:domain csvw:Table;
+	rdfs:range xsd:integer;
+	rdfs:comment "dwo:rowCount represents the number of ingest errors that were generated by a table resource";
+	rdfs:isDefinedBy dwo: .
+
+
+#Column statistics
+dwo:columnNonEmptyValueCount a owl:DatatypeProperty;
+	rdfs:domain csvw:Column;
+	rdfs:range xsd:integer;
+	rdfs:comment "dwo:nonEmptyValueCount represents the number of non-empty values for a given column";
+	rdfs:isDefinedBy dwo: .
+
+dwo:columnDistinctValueCount a owl:DatatypeProperty;
+	rdfs:domain csvw:Column;
+	rdfs:range xsd:integer;
+	rdfs:comment "dwo:nonEmptyValueCount represents the number of distinct non-empty values for a given column, up to a maximum value of 1000";
+	rdfs:isDefinedBy dwo: .
+
+dwo:columnMinimumValue a owl:DatatypeProperty;
+	rdfs:domain csvw:Column;
+	rdfs:range xsd:anyAtomicValue;
+	rdfs:comment "dwo:columnMinimumValue represents the minimum value for a given column.  Available for numeric, date, and string columns";
+    rdfs:isDefinedBy dwo: .
+
+dwo:columnMaximumValue a owl:DatatypeProperty;
+	rdfs:domain csvw:Column;
+	rdfs:range xsd:anyAtomicValue;
+    rdfs:comment "dwo:columnMaximumValue represents the maximum value for a given column.  Available for numeric, date, and string columns";
+    rdfs:isDefinedBy dwo: .
+
+dwo:columnMeanValue a owl:DatatypeProperty;
+	rdfs:domain csvw:Column;
+	rdfs:range xsd:decimal;
+	rdfs:comment "dwo:columnMeanValue represents the average value for a given column.  Available for numeric columns";
+    rdfs:isDefinedBy dwo: .
+
+dwo:columnStandardDeviation a owl:DatatypeProperty;
+	rdfs:domain csvw:Column;
+	rdfs:range xsd:decimal;
+	rdfs:comment "dwo:columnStandardDeviation represents the standard deviation for values in a given column.  Available for numeric columns";
+	rdfs:isDefinedBy dwo: .
+
+dwo:columnSkewness a owl:DatatypeProperty;
+	rdfs:domain csvw:Column;
+	rdfs:range xsd:decimal;
+	rdfs:comment "dwo:columnSkewness represents the skewness for values in a given column.  Available for numeric columns";
+	rdfs:isDefinedBy dwo: .
+
+dwo:columnKurtosis a owl:DatatypeProperty;
+	rdfs:domain csvw:Column;
+	rdfs:range xsd:decimal;
+	rdfs:comment "dwo:columnKurtosis represents the kurtosis for values in a given column.  Available for numeric columns";
+	rdfs:isDefinedBy dwo: .
+
+dwo:columnMinLength a owl:DatatypeProperty;
+	rdfs:domain csvw:Column;
+	rdfs:range xsd:integer;
+	rdfs:comment "dwo:columnMinLength represents the minimum length for values in a given column.  Available for string columns";
+	rdfs:isDefinedBy dwo: .
+
+dwo:columnMaxLength a owl:DatatypeProperty;
+	rdfs:domain csvw:Column;
+	rdfs:range xsd:integer;
+	rdfs:comment "dwo:columnMaxLength represents the maximum length for values in a given column.  Available for string columns";
+	rdfs:isDefinedBy dwo: .
+
+dwo:columnMeanLength a owl:DatatypeProperty;
+	rdfs:domain csvw:Column;
+	rdfs:range xsd:decimal;
+	rdfs:comment "dwo:columnMeanLength represents the average length for values in a given column.  Available for string columns";
+	rdfs:isDefinedBy dwo: .
+
+
+#Tallies and Histograms
+
+dwo:OccurrenceTally a rdfs:Class ;
+	rdfs:comment "A dwo:OccurrenceTally represents a collection of OccurenceCount resources";
+	rdfs:isDefinedBy dwo: .
+
+
+dwo:OccurrenceCount a rdfs:Class ;
+	rdfs:comment "A dwo:OccurrenceCount represents a the number of times that some target resource occurs in some context";
+	rdfs:isDefinedBy dwo: .
+
+dwo:target a owl:DatatypeProperty;
+	rdfs:domain dwo:OccurrenceCount;
+	rdfs:range xsd:any;
+	rdfs:comment "A dwo:target represents a target resource for an OccurenceCount";
+	rdfs:isDefinedBy dwo: .
+
+dwo:count a owl:DatatypeProperty;
+	rdfs:domain dwo:OccurrenceCount;
+	rdfs:range xsd:integer;
+	rdfs:comment "A dwo:target represents the number of occurences for an OccurenceCount";
+	rdfs:isDefinedBy dwo: .
+
+dwo:HistogramBin a rdfs:Class ;
+	rdfs:comment "A dwo:HistogramBin resource represents a range of values for some continuously valued resource type";
+    rdfs:isDefinedBy dwo: .
+
+dwo:binStart a owl:DatatypeProperty;
+	rdfs:domain dwo:HistogramBin;
+	rdfs:range xsd:any;
+	rdfs:comment "dwo:binStart represents the first value for a dwo:HistogramBin resource, inclusive";
+    rdfs:isDefinedBy dwo: .
+
+dwo:binIndex a owl:DatatypeProperty;
+	rdfs:domain dwo:HistogramBin;
+	rdfs:range xsd:integer;
+	rdfs:comment "dwo:binIndex represents the ordinal index of a dwo:HistogramBin resource among the generated dwo:HistogramBin resources for OccurenceTally";
+	rdfs:isDefinedBy dwo: .
+
+dwo:binEnd a owl:DatatypeProperty;
+	rdfs:domain dwo:HistogramBin;
+	rdfs:range xsd:any;
+	rdfs:comment "dwo:binEnd represents the last value for a dwo:HistogramBin resource, exclusive";
+	rdfs:isDefinedBy dwo: .
+
+#Ingest metadata
+
+dwo:versionId a owl:DatatypeProperty;
+	rdfs:domain dwo:Dataset;
+	rdfs:range xsd:string;
+	rdfs:comment "dwo:versionId represents the data.world version for a dataset at time of most recent ingest";
+    rdfs:isDefinedBy dwo: .
+
+dwo:generationTime a owl:DatatypeProperty;
+	rdfs:domain dwo:Dataset;
+	rdfs:range xsd:integer; #millis since epoch
+	rdfs:comment "dwo:generationTime represents the time of most recent ingest";
+	rdfs:isDefinedBy dwo: .
+
+dwo:mavenVersion a owl:DatatypeProperty;
+	rdfs:domain dwo:Dataset;
+	rdfs:range xsd:string;
+	rdfs:comment "dwo:mavenVersion represents the version of maven used to build the ingest process at the time of the most recent ingest";
+	rdfs:isDefinedBy dwo: .
+
+dwo:gitCommitId a owl:DatatypeProperty;
+	rdfs:domain dwo:Dataset;
+	rdfs:range xsd:string;
+	rdfs:comment "dwo:gitCommitId represents the git commit id for the ingest process sources at the time of the most recent ingest";
+	rdfs:isDefinedBy dwo: .
+
+dwo:gitCommitAbbrev a owl:DatatypeProperty;
+	rdfs:domain dwo:Dataset;
+	rdfs:range xsd:string;
+	rdfs:comment "dwo:gitCommitId represents the abbreviated git commit id for the ingest process sources at the time of the most recent ingest";
+	rdfs:isDefinedBy dwo: .
+
+dwo:gitDirty a owl:DatatypeProperty;
+	rdfs:domain dwo:Dataset;
+	rdfs:range xsd:string;
+	rdfs:comment "dwo:gitDirty represents the git dirty state for the ingest process sources at the time of the most recent ingest";
+	rdfs:isDefinedBy dwo: .
+
+#Graph statistics
+
+dwo:GraphStatistics a rdfs:Class ;
+	rdfs:comment "dwo:GraphStatistics is an entity representing the graph statistics for a given RDF file";
+	rdfs:isDefinedBy dwo: .
+
+dwo:graphStatistics a owl:ObjectProperty;
+	rdfs:domain dwo:File;
+	rdfs:range dwo:GraphStatistics;
+	rdfs:comment "dwo:graphStatistics links an RDF file to corresponding GraphStatistics resource";
+	rdfs:isDefinedBy dwo: .
+
+dwo:entityCount a owl:DatatypeProperty;
+	rdfs:domain dwo:GraphStatistics;
+	rdfs:range xsd:integer;
+	rdfs:comment "dwo:entityCount represents the number of distinct entities present in an RDF file";
+    rdfs:isDefinedBy dwo: .
+
+dwo:tripleCount a owl:DatatypeProperty;
+	rdfs:domain dwo:GraphStatistics;
+	rdfs:range xsd:integer;
+	rdfs:comment "dwo:tripleCount represents the number of triples present in an RDF file";
+	rdfs:isDefinedBy dwo: .
+
+dwo:subjectCount a owl:DatatypeProperty;
+	rdfs:domain dwo:GraphStatistics;
+	rdfs:range xsd:integer;
+	rdfs:comment "dwo:subjectCount represents the number of distinct subjects present in an RDF file";
+	rdfs:isDefinedBy dwo: .
+
+dwo:classCount a owl:DatatypeProperty;
+	rdfs:domain dwo:GraphStatistics;
+	rdfs:range xsd:integer;
+	rdfs:comment "dwo:classCount represents the number of distinct classes referenced by an RDF file";
+	rdfs:isDefinedBy dwo: .
+
+dwo:classDefinedCount a owl:DatatypeProperty;
+	rdfs:domain dwo:GraphStatistics;
+	rdfs:range xsd:integer;
+	rdfs:comment "dwo:classCount represents the number of distinct classes defined in an RDF file";
+	rdfs:isDefinedBy dwo: .
+
+dwo:predicateCount a owl:DatatypeProperty;
+	rdfs:domain dwo:GraphStatistics;
+	rdfs:range xsd:integer;
+	rdfs:comment "dwo:subjectCount represents the number of distinct predicates present in an RDF file";
+	rdfs:isDefinedBy dwo: .
+
+dwo:instanceCount a owl:DatatypeProperty;
+	rdfs:domain dwo:GraphStatistics;
+	rdfs:range xsd:integer;
+	rdfs:comment "dwo:subjectCount represents the number of distinct instances defined in an RDF file";
+	rdfs:isDefinedBy dwo: .
+
+dwo:baseUrl a owl:DatatypeProperty;
+	rdfs:domain dwo:GraphStatistics;
+	rdfs:range xsd:string;
+	rdfs:comment "dwo:subjectCount represents the baseUrl defined in an RDF file, if any";
+	rdfs:isDefinedBy dwo: .
+
+dwo:classCounts a owl:ObjectProperty;
+	rdfs:domain dwo:GraphStatistics;
+	rdfs:range dwo:OccurrenceTally;
+	rdfs:comment "dwo:classCounts represents a tally of class references in an RDF file";
+	rdfs:isDefinedBy dwo: .
+
+dwo:classDefinedCounts a owl:ObjectProperty;
+	rdfs:domain dwo:GraphStatistics;
+	rdfs:range dwo:OccurrenceTally;
+	rdfs:comment "dwo:classDefinedCounts represents a tally of class definitions in an RDF file";
+    rdfs:isDefinedBy dwo: .
+
+dwo:predicateCounts a owl:ObjectProperty;
+	rdfs:domain dwo:GraphStatistics;
+	rdfs:range dwo:OccurrenceTally;
+	rdfs:comment "dwo:predicateCounts represents a tally of predicate used in an RDF file";
+	rdfs:isDefinedBy dwo: .
+
+dwo:standardNamespaces a owl:ObjectProperty;
+	rdfs:domain dwo:GraphStatistics;
+	rdfs:range dwo:OccurrenceTally;
+	rdfs:comment "dwo:standardNamespaces represents a tally of the standard namespaces used in an RDF file";
+	rdfs:isDefinedBy dwo: .
+
+dwo:customNamespaces a owl:ObjectProperty;
+	rdfs:domain dwo:GraphStatistics;
+	rdfs:range dwo:OccurrenceTally;
+	rdfs:comment "dwo:customNamespaces represents a tally of the custome namespaces used in an RDF file.  Bins in this tally are PrefixedNamespace resources";
+    rdfs:isDefinedBy dwo: .
+
+dwo:PrefixedNamespace a rdfs:Class ;
+	rdfs:comment "dwo:PrefixedNamespace is a resource representing a custom namespace present in an RDF file, and it's prefix, if any";
+	rdfs:isDefinedBy dwo: .
+
+dwo:namespace a owl:DatatypeProperty;
+	rdfs:domain dwo:PrefixedNamespace;
+	rdfs:range xsd:string;
+	rdfs:comment "dwo:namespace represents the namespace of a PrefixedNamespace resource";
+	rdfs:isDefinedBy dwo: .
+
+dwo:prefix a owl:DatatypeProperty;
+	rdfs:domain dwo:PrefixedNamespace;
+	rdfs:range xsd:string;
+	rdfs:comment "dwo:namespace represents the prefix of a PrefixedNamespace resource";
+	rdfs:isDefinedBy dwo: .
+
+#Controlled vocabulary for query languages for view table resources
+dwo:QueryLang a rdfs:Class ;
+    rdfs:label "Query Language" .
+
+dwo:QueryLangSQL a dwo:QueryLang ;
+    rdfs:label "SQL" .
+dwo:QueryLangSPARQL a dwo:QueryLang ;
+    rdfs:label "SPARQL" .
+
+#Controlled vocabulary for data issue levels
+dwo:IssueLevel a rdfs:Class ;
+    rdfs:label "Issue Level" .
+
+dwo:IssueLevelWarning a dwo:IssueLevel ;
+    rdfs:label "WARNING" .
+dwo:IssueLevelError a dwo:IssueLevel ;
+    rdfs:label "ERROR" .
+dwo:IssueLevelSecurity a dwo:IssueLevel ;
+    rdfs:label "SECURITY" .
+
+
+#Controlled vocabulary for data issue types
+dwo:DataIssueType a rdfs:Class ;
+        rdfs:label "Data Issue Type" .
+
+dwo:IssueTypeBlankColumn a dwo:DataIssueType ;
+    rdfs:label "BLANK_COLUMN" .
+dwo:IssueTypeConstantColumn a dwo:DataIssueType ;
+    rdfs:label "CONSTANT_COLUMN" .
+dwo:IssueTypeDuplicateRow a dwo:DataIssueType ;
+    rdfs:label "DUPLICATE_ROW" .
+dwo:IssueTypeRowTruncation a dwo:DataIssueType ;
+    rdfs:label "ROW_TRUNCATION" .
+dwo:IssueTypeNumericTruncation a dwo:DataIssueType ;
+    rdfs:label "NUMERIC_TRUNCATION" .
+dwo:IssueTypeStringTruncation a dwo:DataIssueType ;
+    rdfs:label "STRING_TRUNCATION" .
+dwo:IssueTypeSuspiciousRowCount a dwo:DataIssueType ;
+    rdfs:label "SUSPICIOUS_ROW_COUNT" .
+dwo:IssueTypeNotNumberInNumbers a dwo:DataIssueType ;
+    rdfs:label "NOT_NUMBERS_IN_NUMBERS" .
+dwo:IssueTypeCellBlank a dwo:DataIssueType ;
+    rdfs:label "CELL_BLANK" .
+dwo:IssueTypeColumnTruncation a dwo:DataIssueType ;
+    rdfs:label "COLUMN_TRUNCATION" .
+dwo:IssueTypeNoiseNumber a dwo:DataIssueType ;
+    rdfs:label "NOISE_NUMBER" .
+dwo:IssueTypeNoiseText a dwo:DataIssueType ;
+    rdfs:label "NOISE_TEXT" .
+dwo:IssueTypePhoneNumber a dwo:DataIssueType ;
+    rdfs:label "PHONE_NUMBER" .
+dwo:IssueTypeCreditCard a dwo:DataIssueType ;
+    rdfs:label "CREDIT_CARD" .
+dwo:IssueTypeSocialSecurityNumber a dwo:DataIssueType ;
+    rdfs:label "SOCIAL_SECURITY_NUMBER" .
+dwo:IssueTypeEmailAddress a dwo:DataIssueType ;
+    rdfs:label "EMAIL_ADDRESS" .
+dwo:IssueTypeNumNotInStdDev a dwo:DataIssueType ;
+    rdfs:label "NUM_NOT_IN_STD_DEV" .
+dwo:IssueTypeTextLenNotInStdDev a dwo:DataIssueType ;
+    rdfs:label "TEXT_LEN_NOT_IN_STD_DEV" .
+dwo:IssueTypeStateAbbreviation a dwo:DataIssueType ;
+    rdfs:label "STATE_ABBREVIATION" .
+dwo:IssueTypeStateName a dwo:DataIssueType ;
+    rdfs:label "STATE_NAME" .
+dwo:IssueTypeCountryName a dwo:DataIssueType ;
+    rdfs:label "COUNTRY_NAME" .
+dwo:IssueTypeRowTooLong a dwo:DataIssueType ;
+    rdfs:label "ROW_TOO_LONG" .
+dwo:IssueTypeFourDigitZipCode a dwo:DataIssueType ;
+    rdfs:label "FOUR_DIGIT_ZIP_CODE" .
+dwo:zeroLatLong a dwo:DataIssueType ;
+    rdfs:label "ZERO_LAT_LONG" .
+dwo:IssueTypeSuspiciousLatLong a dwo:DataIssueType ;
+    rdfs:label "SUSPICIOUS_LAT_LONG" .
+dwo:zeroDate a dwo:DataIssueType ;
+    rdfs:label "ZERO_DATE" .
+dwo:IssueTypeDateInFarFuture a dwo:DataIssueType ;
+    rdfs:label "DATE_IN_FAR_FUTURE" .
+dwo:IssueTypeUnknownBoolean a dwo:DataIssueType ;
+    rdfs:label "UNKNOWN_BOOLEAN" .
+dwo:IssueTypeDatetimeFormat a dwo:DataIssueType ;
+    rdfs:label "DATETIME_FORMAT" .
+dwo:IssueTypeDateFormat a dwo:DataIssueType ;
+    rdfs:label "DATE_FORMAT" .
+dwo:IssueTypeTimeFormat a dwo:DataIssueType ;
+    rdfs:label "TIME_FORMAT" .
+dwo:IssueTypeDecimalParse a dwo:DataIssueType ;
+    rdfs:label "DECIMAL_PARSE" .
+dwo:IssueTypeFormattedDecimalParse a dwo:DataIssueType ;
+    rdfs:label "FORMATTED_DECIMAL_PARSE" .
+dwo:IssueTypeNumericRangeGreaterThan a dwo:DataIssueType ;
+    rdfs:label "NUMERIC_RANGE_GT" .
+dwo:IssueTypeNumericRangeGreaterThanOrEqual a dwo:DataIssueType ;
+    rdfs:label "NUMERIC_RANGE_GTE" .
+dwo:IssueTypeNumericRangeLessThan a dwo:DataIssueType ;
+    rdfs:label "NUMERIC_RANGE_LT" .
+dwo:IssueTypeNumericRangeLessThanOrEqual a dwo:DataIssueType ;
+    rdfs:label "NUMERIC_RANGE_LTE" .
+dwo:IssueTypeDurationsNotSupported a dwo:DataIssueType ;
+    rdfs:label "DURATIONS_NOT_SUPPORTED" .
+dwo:yearMonthFormat a dwo:DataIssueType ;
+    rdfs:label "YEARMONTH_FORMAT" .
+dwo:yearParse a dwo:DataIssueType ;
+    rdfs:label "YEAR_PARSE" .
+dwo:IssueTypeIntegerParse a dwo:DataIssueType ;
+    rdfs:label "INTEGER_PARSE" .
+dwo:IssueTypeStringLengthNotEqual a dwo:DataIssueType ;
+    rdfs:label "STRING_LENGTH_NE" .
+dwo:IssueTypeStringLengthGreaterThan a dwo:DataIssueType ;
+    rdfs:label "STRING_LENGTH_GT" .
+dwo:IssueTypeStringLengthLessThan a dwo:DataIssueType ;
+    rdfs:label "STRING_LENGTH_LT" .
+dwo:IssueTypeMalformedUri a dwo:DataIssueType ;
+    rdfs:label "MALFORMED_URI" .
+dwo:IssueTypeLatLongParse a dwo:DataIssueType ;
+    rdfs:label "LAT_LONG_PARSE" .
+dwo:IssueTypeMissingRequiredValue a dwo:DataIssueType ;
+    rdfs:label "MISSING_REQUIRED_VALUE" .
+dwo:IssueTypeUnknownLookupValue a dwo:DataIssueType ;
+    rdfs:label "UNKNOWN_LOOKUP_VALUE" .
+dwo:IssueTypeMalformedJsonFile a dwo:DataIssueType ;
+    rdfs:label "MALFORMED_JSON_FILE" .
+dwo:IssueTypeMalformedCsvFile a dwo:DataIssueType ;
+    rdfs:label "MALFORMED_CSV_FILE" .
+dwo:IssueTypeMalformedZipFile a dwo:DataIssueType ;
+    rdfs:label "MALFORMED_ZIP_FILE" .
+dwo:IssueTypeMalformedRdfFile a dwo:DataIssueType ;
+    rdfs:label "MALFORMED_RDF_FILE" .
+dwo:IssueTypeObsoleteExcelFile a dwo:DataIssueType ;
+    rdfs:label "OBSOLETE_EXCEL_FILE" .
+dwo:IssueTypeMalformedExcelFile a dwo:DataIssueType ;
+    rdfs:label "MALFORMED_EXCEL_FILE" .
+dwo:IssueTypeMalformedSqliteFile a dwo:DataIssueType ;
+    rdfs:label "MALFORMED_SQLITE_FILE" .
+dwo:IssueTypeUnknownFileProcessingIssue a dwo:DataIssueType ;
+    rdfs:label "UNKNOWN_FILE_PROCESSING_ISSUE" .
+

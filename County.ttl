@@ -1,0 +1,51 @@
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix fn:    <http://www.w3.org/2005/xpath-functions#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix dwo:   <https://ontology.data.world/v0#> .
+@prefix label: <http://purl.org/net/vocab/2004/03/label#> .
+
+dwo:County
+        a                owl:Class ;
+        rdfs:label       "County" ;
+        label:plural     "Counties" ;
+        dc:description   "A political and administrative division of US states, providing certain local governmental services." ;
+        foaf:depiction   <https://ontology-assets.data.world/icons/icon-geo.svg> ;
+	    rdfs:isDefinedBy dwo: ;
+        dwo:mayBePartOf  dwo:UsAdministrativeDivision  .
+
+dwo:Code_UsCountyFipsCode
+        a                dwo:CodeSet ;
+        dwo:denotation   dwo:County ;
+        rdfs:label       "US County FIPS Code" ;
+        label:plural     "US County FIPS Codes" ;
+        rdfs:isDefinedBy dwo:  ;
+        dwo:propertyNamePattern "(fips|county)";
+        dwo:denotedByPredicate dwo:fips6_4 .
+
+dwo:Code_UsCountyFipsCode3
+        a                dwo:CodeSet ;
+        dwo:denotation   dwo:County;
+        rdfs:label       "US County FIPS Code (Three Digit)" ;
+        label:plural     "US County FIPS Codes (Three Digit)" ;
+        dwo:requiresContext     dwo:UsAdministrativeDivision ;
+        rdfs:isDefinedBy dwo:  ;
+        dwo:propertyNamePattern "(fips|county)";
+        dwo:denotedByPredicate dwo:fips6_4County_Code ;
+        dwo:contextByPredicate dwo:partOfUsState .
+
+dwo:Code_UsCountyShortName
+        a                dwo:CodeSet ;
+        dwo:denotation  dwo:County;
+        rdfs:label       "US County Short Name" ;
+        label:plural     "US County Short Names" ;
+        dwo:requiresContext     dwo:UsAdministrativeDivision ;
+        rdfs:isDefinedBy dwo:  ;
+        dwo:denotedByPredicate dwo:countyShortName ;
+        dwo:contextByPredicate dwo:partOfUsState ;
+        dwo:reshapeRule [dwo:regex "^(.*) (county|parish|borough).*$"; dwo:regex_replace "$1"].
+
+
